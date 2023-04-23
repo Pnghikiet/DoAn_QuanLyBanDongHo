@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 21, 2023 lúc 10:07 AM
+-- Thời gian đã tạo: Th4 23, 2023 lúc 06:55 AM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 7.3.27
 
@@ -201,17 +201,15 @@ CREATE TABLE IF NOT EXISTS `nhanvien` (
   `Ten` varchar(255) DEFAULT NULL,
   `GioiTinh` varchar(3) DEFAULT NULL,
   `ChucVu` varchar(100) NOT NULL,
-  `Quyen` varchar(255) NOT NULL,
-  PRIMARY KEY (`MaNV`),
-  KEY `nhanvien_ibfk_1` (`Quyen`)
+  PRIMARY KEY (`MaNV`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `nhanvien`
 --
 
-INSERT INTO `nhanvien` (`MaNV`, `Ho`, `Ten`, `GioiTinh`, `ChucVu`, `Quyen`) VALUES
-(1, 'Admin', NULL, NULL, 'Admin', 'Quản trị');
+INSERT INTO `nhanvien` (`MaNV`, `Ho`, `Ten`, `GioiTinh`, `ChucVu`) VALUES
+(1, 'Admin', NULL, NULL, 'Admin');
 
 -- --------------------------------------------------------
 
@@ -304,16 +302,18 @@ CREATE TABLE IF NOT EXISTS `taikhoan` (
   `MaNV` int(11) NOT NULL,
   `TaiKhoan` varchar(255) NOT NULL,
   `MatKhau` varchar(255) NOT NULL,
+  `Quyen` varchar(100) NOT NULL,
   `TrangThai` int(11) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`MaNV`)
+  PRIMARY KEY (`MaNV`),
+  KEY `taikhoan_ibfk_2` (`Quyen`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `taikhoan`
 --
 
-INSERT INTO `taikhoan` (`MaNV`, `TaiKhoan`, `MatKhau`, `TrangThai`) VALUES
-(1, 'admin', 'admin', 1);
+INSERT INTO `taikhoan` (`MaNV`, `TaiKhoan`, `MatKhau`, `Quyen`, `TrangThai`) VALUES
+(1, 'admin', 'admin', 'Quản trị', 1);
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -344,7 +344,6 @@ ALTER TABLE `hoadon`
 -- Các ràng buộc cho bảng `nhanvien`
 --
 ALTER TABLE `nhanvien`
-  ADD CONSTRAINT `nhanvien_ibfk_1` FOREIGN KEY (`Quyen`) REFERENCES `phanquyen` (`Quyen`),
   ADD CONSTRAINT `nhanvien_ibfk_2` FOREIGN KEY (`MaNV`) REFERENCES `taikhoan` (`MaNV`);
 
 --
@@ -365,7 +364,8 @@ ALTER TABLE `sanpham`
 -- Các ràng buộc cho bảng `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  ADD CONSTRAINT `taikhoan_ibfk_1` FOREIGN KEY (`MaNV`) REFERENCES `nhanvien` (`maNV`);
+  ADD CONSTRAINT `taikhoan_ibfk_1` FOREIGN KEY (`MaNV`) REFERENCES `nhanvien` (`maNV`),
+  ADD CONSTRAINT `taikhoan_ibfk_2` FOREIGN KEY (`Quyen`) REFERENCES `phanquyen` (`Quyen`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
