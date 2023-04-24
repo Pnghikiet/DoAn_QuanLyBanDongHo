@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package DAO;
 
 import DTO.KhachHang;
@@ -13,14 +9,33 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- * @author User
- */
 public class KhachHangDAO {
 
     public ArrayList<KhachHang> getListKhachHang() {
         try {
             String sql = "SELECT * FROM khachhang WHERE TinhTrang=1";
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+            ArrayList<KhachHang> dskh = new ArrayList<>();
+            while (rs.next()) {
+                KhachHang kh = new KhachHang();
+                kh.setMaKH(rs.getInt(1));
+                kh.setHo(rs.getString(2));
+                kh.setTen(rs.getString(3));
+                kh.setGioiTinh(rs.getString(4));
+                kh.setSoDienThoai(rs.getString(5));
+                kh.setTongChiTieu(rs.getInt(6));
+                dskh.add(kh);
+            }
+            return dskh;
+        } catch (SQLException ex) {
+        }
+        return null;
+    }
+    
+    public ArrayList<KhachHang> getListKhachHangBiXoa() {
+        try {
+            String sql = "SELECT * FROM khachhang WHERE TinhTrang=0";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             ArrayList<KhachHang> dskh = new ArrayList<>();
@@ -84,6 +99,19 @@ public class KhachHangDAO {
         boolean result = false;
         try {
             String sql = "UPDATE khachhang SET TinhTrang=0 WHERE MaKH=?";
+            PreparedStatement prep = MyConnect.conn.prepareStatement(sql);
+            prep.setInt(1, maKH);
+            result = prep.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            return false;
+        }
+        return result;
+    }
+
+    public boolean xoaKhachHangVinhVien(int maKH) {
+        boolean result = false;
+        try {
+            String sql = "DELETE FROM khachhang WHERE MaKH=?";
             PreparedStatement prep = MyConnect.conn.prepareStatement(sql);
             prep.setInt(1, maKH);
             result = prep.executeUpdate() > 0;
