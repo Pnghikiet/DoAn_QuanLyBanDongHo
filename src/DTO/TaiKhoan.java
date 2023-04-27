@@ -5,14 +5,15 @@ public class TaiKhoan {
     private int maNV;
     private String taiKhoan;
     private String matKhau;
-
+    private String Quyen;
     public TaiKhoan() {
     }
 
-    public TaiKhoan(int maNV, String taiKhoan, String matKhau) {
+    public TaiKhoan(int maNV, String taiKhoan, String matKhau, String quyen) {
         this.maNV = maNV;
         this.taiKhoan = taiKhoan;
         this.matKhau = matKhau;
+        this.Quyen = quyen;
     }
 
     public int getMaNV() {
@@ -38,4 +39,13 @@ public class TaiKhoan {
     public void setMatKhau(String matKhau) {
         this.matKhau = matKhau;
     }
+
+    public String getQuyen() {
+        return Quyen;
+    }
+
+    public void setQuyen(String Quyen) {
+        this.Quyen = Quyen;
+    }
+    
 }

@@ -6,17 +6,17 @@ public class NhanVien {
     private String ho;
     private String ten;
     private String gioiTinh;
-    private String quyen;
+    private String chucVu;
 
     public NhanVien() {
     }
 
-    public NhanVien(int maNV, String ho, String ten, String gioiTinh, String quyen) {
+    public NhanVien(int maNV, String ho, String ten, String gioiTinh, String chucVu) {
         this.maNV = maNV;
         this.ho = ho;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
-        this.quyen = quyen;
+        this.chucVu = chucVu;
     }
 
     public int getMaNV() {
@@ -51,12 +51,12 @@ public class NhanVien {
         this.gioiTinh = gioiTinh;
     }
 
-    public String getQuyen() {
-        return quyen;
+    public String getChucVu() {
+        return chucVu;
     }
 
-    public void setQuyen(String quyen) {
-        this.quyen = quyen;
+    public void setChucVu(String chucVu) {
+        this.chucVu = chucVu;
     }
 
 }

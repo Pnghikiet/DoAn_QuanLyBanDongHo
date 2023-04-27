@@ -5,6 +5,13 @@
         <group>
             <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/GUI/FrmQuanLyKhachHang.java</file>
             <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/BUS/KhachHangBUS.java</file>
+            <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/Customs/XuLyFileExcel.java</file>
+            <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/GUI/FrmQuanLyNhanVien.java</file>
+            <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/BUS/TaiKhoanBUS.java</file>
+            <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/DAO/NhanVienDAO.java</file>
+            <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/BUS/NhanVienBUS.java</file>
+            <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/GUI/PnQuanLyNhanVienGUI.java</file>
+            <file>file:/E:/Workspace/Java/DoAn_QuanLyBanDongHo/src/DAO/TaiKhoanDAO.java</file>
         </group>
     </open-files>
 </project-private>

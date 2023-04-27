@@ -67,6 +67,4 @@ public class KhachHang {
     public void setTongChiTieu(int tongChiTieu) {
         this.tongChiTieu = tongChiTieu;
     }
-
-
 }

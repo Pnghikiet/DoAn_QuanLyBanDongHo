@@ -14,9 +14,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -26,43 +23,90 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-public class FrmQuanLyKhachHang extends JFrame{
-    private KhachHangBUS khachHangBUS = new KhachHangBUS();
+public final class FrmQuanLyKhachHang extends JFrame{
+    private final KhachHangBUS khachHangBUS = new KhachHangBUS();
     
-    private JLabel lblTitle, lblMaKH, lblHoKH, lblTenKH, lblGioiTinh, lblSoDienThoai, lblTongChiTieu, lblTim, lblTimChiTieu, lblDen;
+    private JLabel lblTabbedKhachHang, lblTabbedKhachHangBiXoa;
+    final ImageIcon tabbedSelected = new ImageIcon("images/ManagerUI/tabbed-btn--selected.png");
+    final ImageIcon tabbedDefault = new ImageIcon("images/ManagerUI/tabbed-btn.png");
+    private JPanel pnlCardTabKhachHang;
+    private final CardLayout cardKhachHangGroup = new CardLayout();
+    private JLabel lblTitleKhachHang, lblMaKH, lblHoKH, lblTenKH, lblGioiTinh, lblSoDienThoai, lblTongChiTieu, lblTim, lblTimChiTieu, lblDen;
     private JTextField txtMaKH, txtHoKH, txtTenKH,txtSoDienThoai, txtTongChiTieu, txtTim, txtMinChiTieu, txtMaxChiTieu;
-    private JPanel pnlTimKiemTheoChiTieu;
-    public JComboBox<String> cmbGioiTinh;
-    public JComboBox<String> cmbLoaiTimKiem;
-    public JComboBox<String> cmbTimKiem;
+    private JButton btnReset, btnThem, btnSua, btnXoa, btnTimKiem;
     private JTable tblKhachHang;
     private DefaultTableModel modelKhachHang;
-    private JButton btnReset, btnThem, btnSua, btnXoa, btnTimKiem;
-    private String placeholderTimKiem = "Nhập từ khóa mà bạn muốn tìm kiếm...";
-    private boolean  hoError = false;
-    private boolean  tenError = false;
-    private boolean  sdtError = false;
-    private boolean  minError = false;
-    private boolean  maxError = false;
-    private int count = 0;
+    public JComboBox<String> cmbGioiTinh;
+    private JLabel lblTitleKhachHangBX, lblMaKHBX, lblHoKHBX, lblTenKHBX, lblGioiTinhBX, lblSoDienThoaiBX, lblTongChiTieuBX, lblTimBX, lblTimChiTieuBX, lblDenBX;
+    private JTextField txtMaKHBX, txtHoKHBX, txtTenKHBX,txtSoDienThoaiBX, txtTongChiTieuBX, txtTimBX, txtMinChiTieuBX, txtMaxChiTieuBX;
+    private JButton btnResetBX, btnKhoiPhuc, btnSuaBX, btnXoaVinhVien, btnTimKiemBX;
+    private JTable tblKhachHangBX;
+    private DefaultTableModel modelKhachHangBX;
+    public JComboBox<String> cmbGioiTinhBX;
+    private Font font,fontTabbed;
+    private final String placeholderTimKiem = "Nhập từ khóa mà bạn muốn tìm kiếm...";
+    
     public FrmQuanLyKhachHang() {
-       addControlsKhachHang();
+       addControls();
        addEventsKhachHang();
+       addEventsKhachHangBiXoa();
     }
-    public void addControlsKhachHang() {
+    
+    public void addControls() {
         setTitle("Quản lý khách hàng");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
+        GridBagConstraints cons = new GridBagConstraints();
+        GridBagConstraints consBX = new GridBagConstraints();
+        font = new Font("Arial", Font.BOLD, 26);
+
+//        Pnl TOP
+        JPanel pnlTop = new JPanel();
+        pnlTop.setOpaque(false);
+        pnlTop.setPreferredSize(new Dimension(1000, 41));
+        pnlTop.setLayout(null);
+        pnlTop.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.GRAY));
+        
+        fontTabbed = new Font("Arial", Font.BOLD, 14);
+        
+        lblTabbedKhachHang = new JLabel("Khách hàng");
+        lblTabbedKhachHang.setHorizontalTextPosition(JLabel.CENTER);
+        lblTabbedKhachHang.setVerticalTextPosition(JLabel.CENTER);
+        lblTabbedKhachHang.setIcon(tabbedSelected);
+        lblTabbedKhachHang.setBounds(2, 2, 140, 37);
+        lblTabbedKhachHang.setFont(fontTabbed);
+        lblTabbedKhachHang.setForeground(Color.white);
+        lblTabbedKhachHang.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        lblTabbedKhachHangBiXoa = new JLabel("Khách hàng bị xóa");
+        lblTabbedKhachHangBiXoa.setHorizontalTextPosition(JLabel.CENTER);
+        lblTabbedKhachHangBiXoa.setVerticalTextPosition(JLabel.CENTER);
+        lblTabbedKhachHangBiXoa.setIcon(tabbedDefault);
+        lblTabbedKhachHangBiXoa.setBounds(143, 2, 140, 37);
+        lblTabbedKhachHangBiXoa.setFont(fontTabbed);
+        lblTabbedKhachHangBiXoa.setForeground(Color.white);
+        lblTabbedKhachHangBiXoa.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        pnlTop.add(lblTabbedKhachHang);
+        pnlTop.add(lblTabbedKhachHangBiXoa);
+        
+        //        Thêm pnlTop vào Frame
+        this.add(pnlTop, BorderLayout.NORTH);
         
         DefaultTableCellRenderer centerRederer = new DefaultTableCellRenderer();
         centerRederer.setHorizontalAlignment(JLabel.CENTER);
         
+        /*
+        =========================================================================
+                                    PANEL KHÁCH HÀNG
+        =========================================================================
+         */
         
+        JPanel pnlKhachHang = new JPanel(new GridBagLayout());
         
-        lblTitle = new JLabel("QUẢN LÝ KHÁCH HÀNG");
-        Font font = new Font("Arial", Font.BOLD, 26);
-        lblTitle.setFont(font);
+        lblTitleKhachHang = new JLabel("QUẢN LÝ KHÁCH HÀNG");
+        lblTitleKhachHang.setFont(font);
         
         lblMaKH = new JLabel("Mã Khách hàng");
         lblHoKH = new JLabel("Họ đệm");
@@ -77,8 +121,6 @@ public class FrmQuanLyKhachHang extends JFrame{
         txtMaKH = new JTextField(20);
         txtMaKH.setEditable(false);
         txtHoKH = new JTextField(20);
-        txtHoKH = new JTextField(20);
-        txtTenKH = new JTextField(20);
         txtTenKH = new JTextField(20);
         txtSoDienThoai = new JTextField(20);
         txtTongChiTieu = new JTextField(20);
@@ -96,17 +138,15 @@ public class FrmQuanLyKhachHang extends JFrame{
         btnXoa = new JButton("Xóa");
         btnTimKiem = new JButton("Tìm kiếm");
         
-        cmbGioiTinh = new JComboBox<String>();
+        cmbGioiTinh = new JComboBox<>();
         cmbGioiTinh.addItem("Chọn giới tính");
         cmbGioiTinh.addItem("Nam");
         cmbGioiTinh.addItem("Nữ");
-//        cmbLoaiTimKiem = new JComboBox<String>();
-//        cmbLoaiTimKiem.setVisible(false);
-//        cmbTimKiem = new JComboBox<String>();
-        GridBagConstraints cons = new GridBagConstraints();
+
+        
         
         // Panel Tìm kiếm theo chi tiêu
-        pnlTimKiemTheoChiTieu = new JPanel(new GridBagLayout());
+        JPanel pnlTimKiemTheoChiTieu = new JPanel(new GridBagLayout());
         cons.gridx = 0;
         cons.gridy = 0;
         cons.insets = new Insets(5, 5, 5, 5);
@@ -129,32 +169,28 @@ public class FrmQuanLyKhachHang extends JFrame{
         cons.gridy = 0;
         pnlTimKiemTheoChiTieu.add(btnTimKiem, cons);
         
-//        pnlTimKiemTheoChiTieu.setVisible(false);
-        
-        
-//        Panel Title
-        JPanel pnlTitle = new JPanel(new GridBagLayout());
-        
+//        Panel Title 
+        JPanel pnlTitleKhachHang = new JPanel(new GridBagLayout());
         cons.gridx = 0;
         cons.gridy = 0;
         cons.gridwidth = 1;
         cons.insets = new Insets(10, 10, 10, 10);
         cons.anchor = GridBagConstraints.CENTER;
-        pnlTitle.add(lblTitle, cons);
+        pnlTitleKhachHang.add(lblTitleKhachHang, cons);
         
         cons.gridx = 1;
         cons.gridy = 0;
         cons.gridwidth = 1;
         cons.anchor = GridBagConstraints.WEST;
-        pnlTitle.add(btnReset, cons);
+        pnlTitleKhachHang.add(btnReset, cons);
         
-//        Thêm pnlTitle vào Frame
+//        Thêm pnlTitleKhachHang vào PanelKhachHang
         cons.gridx = 0;
         cons.gridy = 0;
         cons.anchor = GridBagConstraints.PAGE_START;
         cons.fill = GridBagConstraints.BOTH;
         cons.gridwidth = 1;
-        add(pnlTitle, cons);
+        pnlKhachHang.add(pnlTitleKhachHang, cons);
         
        
 
@@ -271,31 +307,31 @@ public class FrmQuanLyKhachHang extends JFrame{
         cons.anchor = GridBagConstraints.CENTER;
         pnlTTKH.add(pnlBtn, cons);
         
-//        Thêm pnl TTKH vào JFrame
+//        Thêm pnl TTKH vào pnlKhachHang
         cons.gridx = 0;
         cons.gridy = 1;
         cons.gridwidth = 1;
         cons.gridheight = 1;
         cons.fill = GridBagConstraints.BOTH;
-        add(pnlTTKH, cons);
+        pnlKhachHang.add(pnlTTKH, cons);
             
-//        Them pnl Tim Kiem vao JFrame
+//        Them pnl Tim Kiem vao pnlKhachHang
         cons.gridx = 0;
         cons.gridy = 2;
         cons.gridwidth = 1;
         cons.gridheight = 1;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.CENTER;
-        add(pnlTimKiem, cons);
+        pnlKhachHang.add(pnlTimKiem, cons);
 
-//        Thêm Pnl Tìm kiếm theo chi tiêu vào Frm
+//        Thêm Pnl Tìm kiếm theo chi tiêu vào pnlKhachHang
         cons.gridx = 0;
         cons.gridy = 3;
         cons.gridwidth = 1;
         cons.gridheight = 1;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.CENTER;
-        add(pnlTimKiemTheoChiTieu, cons);
+        pnlKhachHang.add(pnlTimKiemTheoChiTieu, cons);
         
         JPanel pnlTable = new JPanel(new BorderLayout());
         
@@ -328,7 +364,7 @@ public class FrmQuanLyKhachHang extends JFrame{
         cons.weighty = 1.0;
         cons.fill = GridBagConstraints.BOTH;
         cons.anchor = GridBagConstraints.CENTER;
-        add(pnlTable, cons);
+        pnlKhachHang.add(pnlTable, cons);
         
         ArrayList<Component> order = new ArrayList<>();
         order.add(txtHoKH);
@@ -360,16 +396,376 @@ public class FrmQuanLyKhachHang extends JFrame{
                 return order.get(idx);
             }
         };
+        pnlKhachHang.setFocusTraversalPolicy(policy);
         
-        setFocusTraversalPolicy(policy);
+                /*
+        =========================================================================
+                                    PANEL KHÁCH HÀNG BỊ XÓA
+        =========================================================================
+         */
+        JPanel pnlKhachHangBX = new JPanel(new GridBagLayout());
+        
+        lblTitleKhachHangBX = new JLabel("QUẢN LÝ KHÁCH HÀNG BỊ XÓA");
+        font = new Font("Arial", Font.BOLD, 26);
+        lblTitleKhachHangBX.setFont(font);
+        
+        lblMaKHBX = new JLabel("Mã Khách hàng");
+        lblHoKHBX = new JLabel("Họ đệm");
+        lblTenKHBX = new JLabel("Tên");
+        lblGioiTinhBX = new JLabel("Giới tính");
+        lblSoDienThoaiBX = new JLabel("Số điện thoại");
+        lblTongChiTieuBX = new JLabel("Tổng chi tiêu");
+        lblTimBX = new JLabel("Từ khóa  tìm kiếm");
+        lblTimChiTieuBX = new JLabel("Chi tiêu từ ");
+        lblDenBX = new JLabel("đến:");
+        
+        txtMaKHBX = new JTextField(20);
+        txtMaKHBX.setEditable(false);
+        txtHoKHBX = new JTextField(20);
+        txtTenKHBX = new JTextField(20);
+        txtSoDienThoaiBX = new JTextField(20);
+        txtTongChiTieuBX = new JTextField(20);
+        txtTongChiTieuBX.setEditable(false);
+        txtTimBX = new JTextField(20);
+        txtMinChiTieuBX = new JTextField(15);
+        txtMaxChiTieuBX = new JTextField(15);
+        
+        txtTimBX.setForeground(Color.GRAY);
+        txtTimBX.setText(placeholderTimKiem);
+        
+        btnResetBX = new JButton("Reset");
+        btnKhoiPhuc = new JButton("Khôi phục");
+        btnSuaBX = new JButton("Sửa");
+        btnXoaVinhVien = new JButton("Xóa vĩnh viễn");
+        btnTimKiemBX = new JButton("Tìm kiếm");
+        
+        cmbGioiTinhBX = new JComboBox<>();
+        cmbGioiTinhBX.addItem("Chọn giới tính");
+        cmbGioiTinhBX.addItem("Nam");
+        cmbGioiTinhBX.addItem("Nữ");
+
+        
+        
+        // Panel Tìm kiếm theo chi tiêu
+        JPanel pnlTimKiemTheoChiTieuBX = new JPanel(new GridBagLayout());
+        consBX.gridx = 0;
+        consBX.gridy = 0;
+        consBX.insets = new Insets(5, 5, 5, 5);
+        pnlTimKiemTheoChiTieuBX.add(lblTimChiTieuBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 0;
+        consBX.insets = new Insets(5, 5, 5, 5);
+        pnlTimKiemTheoChiTieuBX.add(txtMinChiTieuBX, consBX);
+        
+        consBX.gridx = 2;
+        consBX.gridy = 0;
+        pnlTimKiemTheoChiTieuBX.add(lblDenBX, consBX);
+        
+        consBX.gridx = 3;
+        consBX.gridy = 0;
+        pnlTimKiemTheoChiTieuBX.add(txtMaxChiTieuBX, consBX);
+        
+        consBX.gridx = 4;
+        consBX.gridy = 0;
+        pnlTimKiemTheoChiTieuBX.add(btnTimKiemBX, consBX);
+        
+//        Panel Title
+        JPanel pnlTitleKhachHangBX = new JPanel(new GridBagLayout());
+        consBX.gridx = 0;
+        consBX.gridy = 0;
+        consBX.gridwidth = 1;
+        consBX.insets = new Insets(10, 10, 10, 10);
+        consBX.anchor = GridBagConstraints.CENTER;
+        pnlTitleKhachHangBX.add(lblTitleKhachHangBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 0;
+        consBX.gridwidth = 1;
+        consBX.anchor = GridBagConstraints.WEST;
+        pnlTitleKhachHangBX.add(btnResetBX, consBX);
+        
+//        Thêm pnlTitleKhachHangBX vào PanelKhachHangBX
+        consBX.gridx = 0;
+        consBX.gridy = 0;
+        consBX.anchor = GridBagConstraints.PAGE_START;
+        consBX.fill = GridBagConstraints.BOTH;
+        consBX.gridwidth = 1;
+        pnlKhachHangBX.add(pnlTitleKhachHangBX, consBX);
+        
+       
+
+//        Panel Thông tin Khách hàng
+        JPanel pnlTTKHBX = new JPanel(new GridBagLayout());
+        
+        consBX.gridx = 0;
+        consBX.gridy = 0;
+        consBX.gridwidth = 1;
+        consBX.insets = new Insets(10, 10, 10, 10);
+        consBX.anchor = GridBagConstraints.WEST;
+        pnlTTKHBX.add(lblMaKHBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 0;
+        consBX.gridwidth = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        pnlTTKHBX.add(txtMaKHBX, consBX);
+        
+        consBX.gridx = 0;
+        consBX.gridy = 1;
+        consBX.gridwidth = 1;
+        pnlTTKHBX.add(lblHoKHBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 1;
+        consBX.gridwidth = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        pnlTTKHBX.add(txtHoKHBX, consBX);
+        
+        consBX.gridx = 0;
+        consBX.gridy = 2;
+        consBX.gridwidth = 1;
+        pnlTTKHBX.add(lblTenKHBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 2;
+        consBX.gridwidth = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        pnlTTKHBX.add(txtTenKHBX, consBX);
+        
+        consBX.gridx = 0;
+        consBX.gridy = 3;
+        consBX.gridwidth = 1;
+        pnlTTKHBX.add(lblSoDienThoaiBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 3;
+        consBX.gridwidth = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        pnlTTKHBX.add(txtSoDienThoaiBX, consBX);
+        
+        consBX.gridx = 0;
+        consBX.gridy = 4;
+        consBX.gridwidth = 1;
+        pnlTTKHBX.add(lblGioiTinhBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 4;
+        consBX.gridwidth = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        pnlTTKHBX.add(cmbGioiTinhBX, consBX);
+        
+        consBX.gridx = 0;
+        consBX.gridy = 5;
+        consBX.gridwidth = 1;
+        pnlTTKHBX.add(lblTongChiTieuBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 5;
+        consBX.gridwidth = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        pnlTTKHBX.add(txtTongChiTieuBX, consBX);
+        
+//        Panel Tim kiem
+        JPanel pnlTimKiemBX = new JPanel(new GridBagLayout());
+        
+        consBX.gridx = 0;
+        consBX.gridy = 0;
+        consBX.gridwidth = 1;
+        pnlTimKiemBX.add(lblTimBX, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 0;
+        consBX.gridwidth = 1;
+        pnlTimKiemBX.add(txtTimBX, consBX);
+        
+        
+//        Panel Button
+        JPanel pnlBtnBX = new JPanel(new GridBagLayout());
+        
+        consBX.gridx = 0;
+        consBX.gridy = 0;
+        consBX.insets = new Insets(10, 10, 10, 10);
+        consBX.fill = GridBagConstraints.BOTH;
+        consBX.gridwidth = 1;
+        pnlBtnBX.add(btnKhoiPhuc, consBX);
+        
+        consBX.gridx = 1;
+        consBX.gridy = 0;
+        consBX.gridwidth = 1;
+        pnlBtnBX.add(btnSuaBX, consBX);
+        
+        consBX.gridx = 2;
+        consBX.gridy = 0;
+        consBX.gridwidth = 1;
+        pnlBtnBX.add(btnXoaVinhVien, consBX);
+
+//        add pnl Button vào pnl hiển thị
+        
+        consBX.gridx = 0;
+        consBX.gridy = 6;
+        consBX.gridwidth = 2;
+        consBX.anchor = GridBagConstraints.CENTER;
+        pnlTTKHBX.add(pnlBtnBX, consBX);
+        
+//        Thêm pnl TTKHBX vào pnlKhachHangBX
+        consBX.gridx = 0;
+        consBX.gridy = 1;
+        consBX.gridwidth = 1;
+        consBX.gridheight = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        pnlKhachHangBX.add(pnlTTKHBX, consBX);
+            
+//        Them pnl Tim Kiem vao pnlKhachHangBX
+        consBX.gridx = 0;
+        consBX.gridy = 2;
+        consBX.gridwidth = 1;
+        consBX.gridheight = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        consBX.anchor = GridBagConstraints.CENTER;
+        pnlKhachHangBX.add(pnlTimKiemBX, consBX);
+
+//        Thêm Pnl Tìm kiếm theo chi tiêu vào pnlKhachHang
+        consBX.gridx = 0;
+        consBX.gridy = 3;
+        consBX.gridwidth = 1;
+        consBX.gridheight = 1;
+        consBX.fill = GridBagConstraints.BOTH;
+        consBX.anchor = GridBagConstraints.CENTER;
+        pnlKhachHangBX.add(pnlTimKiemTheoChiTieuBX, consBX);
+        
+        JPanel pnlTableBX = new JPanel(new BorderLayout());
+        
+        modelKhachHangBX = new DefaultTableModel();
+        
+        modelKhachHangBX.addColumn("Mã KH");
+        modelKhachHangBX.addColumn("Họ đệm");
+        modelKhachHangBX.addColumn("Tên");
+        modelKhachHangBX.addColumn("Giới tính");
+        modelKhachHangBX.addColumn("Số điện thoại");
+        modelKhachHangBX.addColumn("Tổng chi tiêu");
+        
+        tblKhachHangBX = new JTable(modelKhachHangBX);
+        
+        tblKhachHangBX.getColumnModel().getColumn(0).setCellRenderer(centerRederer);
+        tblKhachHangBX.getColumnModel().getColumn(1).setCellRenderer(centerRederer);
+        tblKhachHangBX.getColumnModel().getColumn(2).setCellRenderer(centerRederer);
+        tblKhachHangBX.getColumnModel().getColumn(3).setCellRenderer(centerRederer);
+        tblKhachHangBX.getColumnModel().getColumn(4).setCellRenderer(centerRederer);
+        tblKhachHangBX.getColumnModel().getColumn(5).setCellRenderer(centerRederer);
+        
+        
+        JScrollPane scrKhachHangBX = new JScrollPane(tblKhachHangBX);  
+        pnlTableBX.add(scrKhachHangBX, BorderLayout.CENTER);
+        consBX.gridx = 0;
+        consBX.gridy = 4;
+        consBX.gridwidth = 1;
+        consBX.gridheight = 1;
+        consBX.weightx = 1.0;
+        consBX.weighty = 1.0;
+        consBX.fill = GridBagConstraints.BOTH;
+        consBX.anchor = GridBagConstraints.CENTER;
+        pnlKhachHangBX.add(pnlTableBX, consBX);
+        
+        ArrayList<Component> orderBX = new ArrayList<>();
+        orderBX.add(txtHoKHBX);
+        orderBX.add(txtTenKHBX);
+        orderBX.add(txtSoDienThoaiBX);
+        orderBX.add(cmbGioiTinhBX);
+        orderBX.add(btnKhoiPhuc);
+        orderBX.add(btnSuaBX);
+        orderBX.add(btnXoaVinhVien);
+        orderBX.add(txtTimBX);
+        orderBX.add(txtMinChiTieuBX);
+        orderBX.add(txtMaxChiTieuBX);
+        orderBX.add(btnTimKiemBX);
+        orderBX.add(btnResetBX);
+        
+        LayoutFocusTraversalPolicy policyBX = new LayoutFocusTraversalPolicy() {
+            @Override
+            public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
+                int idx = (orderBX.indexOf(aComponent) + 1) % orderBX.size();
+                return orderBX.get(idx);
+            }
+            
+            @Override
+            public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
+                int idx = orderBX.indexOf(aComponent) - 1;
+                if (idx < 0) {
+                    idx = orderBX.size() - 1;
+                }
+                return orderBX.get(idx);
+            }
+        };
+        pnlKhachHangBX.setFocusTraversalPolicy(policyBX);
+        
+        
+        pnlCardTabKhachHang = new JPanel(cardKhachHangGroup);
+        pnlCardTabKhachHang.add(pnlKhachHang, "1");
+        pnlCardTabKhachHang.add(pnlKhachHangBX, "2");
+   
+        this.add(pnlCardTabKhachHang);
         
         loadDataLenBangKhachHang();
+        loadDataLenBangKhachHangBX();
         
         setSize(1000, 700);
         setVisible(true);
     }
     
     private void addEventsKhachHang() {
+        lblTabbedKhachHang.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                lblTabbedKhachHang.setIcon(tabbedSelected);
+                lblTabbedKhachHangBiXoa.setIcon(tabbedDefault);
+                cardKhachHangGroup.show(pnlCardTabKhachHang, "1");
+                loadDataLenBangKhachHang();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+
+        lblTabbedKhachHangBiXoa.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                lblTabbedKhachHangBiXoa.setIcon(tabbedSelected);
+                lblTabbedKhachHang.setIcon(tabbedDefault);
+                cardKhachHangGroup.show(pnlCardTabKhachHang, "2");
+                loadDataLenBangKhachHangBX();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+        
         btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -478,152 +874,7 @@ public class FrmQuanLyKhachHang extends JFrame{
                xuLyTimKiemTheoKhoang();
             }
         });
-        
-//        txtHoKH.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//                if(tenError || sdtError || minError || maxError) {
-//                    System.out.println("Có dialog nào hiển thị" + (++count));
-//                    hoError = false;
-//                } else {
-//                    hoError = true;
-//                     System.out.println("Không có dialog nào hiển thị" + (++count));
-//                }
-//            }
-//
-//            @Override
-//            public void focusLost(FocusEvent e) {   
-//                System.out.println("--------Ho-----------");
-//                System.out.println(hoError);
-//                System.out.println(tenError);
-//                String ho = txtHoKH.getText().trim();
-//                if(ho.equals("") && hoError) {
-//                    int option = JOptionPane.showOptionDialog(rootPane, "Vui lòng không bỏ trống họ đệm", "Thông báo họ đệm bị bỏ trống", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[]{"OK"}, "OK");
-//                    if (option == JOptionPane.OK_OPTION) {
-//                        txtHoKH.requestFocus();  
-////                        hoError = false;
-//                    }
-//                }
-//            }
-//        });
-//        
-//        
-//        txtTenKH.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//                if(hoError || sdtError || minError || maxError) {
-//                System.out.println("Có dialog nào hiển thị" + (++count));
-//                    tenError = false;
-//                } else {
-//                    System.out.println("Không có dialog nào hiển thị" + (++count));
-//                    tenError = true;
-//                }
-//            }
-//
-//            @Override
-//            public void focusLost(FocusEvent e) {
-//                System.out.println("--------Ten-----------");
-//                System.out.println(hoError);
-//                System.out.println(tenError);
-//                String ten = txtTenKH.getText().trim();
-//                if(ten.equals("") && tenError) {
-//                    int option = JOptionPane.showOptionDialog(rootPane, "Vui lòng không bỏ trống tên", "Thông báo tên bị bỏ trống", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[]{"OK"}, "OK");
-//                    if (option == JOptionPane.OK_OPTION) {
-//                        txtTenKH.requestFocus();  
-////                        tenError = false;
-//                    }
-//                }
-//            }
-//        });
-//        
-//        
-//        txtSoDienThoai.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//            }
-//
-//            @Override
-//            public void focusLost(FocusEvent e) {
-//                if(countDialog == 0) {
-//                    countDialog = 1;
-//                    String sdt = txtSoDienThoai.getText().trim();
-//                    if(sdt.equals("")) {
-//                        JOptionPane.showMessageDialog(rootPane, "Vui lòng nhập số điện thoại khách hàng");
-//                        JOptionPane.getRootFrame().dispose();
-//                        countDialog = 0;
-//                        txtSoDienThoai.requestFocus();
-//                    }
-//                }
-//            }
-//        });
-//        
-//        
-//        txtMinChiTieu.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//            }
-//
-//            @Override
-//            public void focusLost(FocusEvent e) {
-//                System.out.println(getOwnedWindows().length);
-//                if(getOwnedWindows().length == 0) {
-//                    String minChiTieu = txtMinChiTieu.getText().trim();
-//                    if(minChiTieu.equals("")) {
-//                        JOptionPane.showMessageDialog(rootPane, "Không được để trống chi tiêu nhỏ nhất");
-//                        JOptionPane.getRootFrame().dispose();
-//                        txtMinChiTieu.requestFocus();
-//                    } else {
-//                        try {
-//                            minChiTieu = minChiTieu.replace(",", "");
-//                            int min = Integer.parseInt(minChiTieu);
-//                    } catch (Exception ex) {
-//                        JOptionPane.showMessageDialog(rootPane, "Vui lòng nhập chi tiêu với định dạng số!");
-//                        JOptionPane.getRootFrame().dispose();
-//                        txtMinChiTieu.requestFocus();
-//                        } 
-//                    }
-//                }
-//            }
-//        });
-//        
-//        
-//        txtMaxChiTieu.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//            }
-//
-//            @Override
-//            public void focusLost(FocusEvent e) {
-//                System.out.println(getOwnedWindows().length);
-//                if(getOwnedWindows().length == 0) {
-//                    String minChiTieu = txtMinChiTieu.getText().trim();
-//                    String maxChiTieu = txtMaxChiTieu.getText().trim();  
-//                    if (maxChiTieu.equals("")) {
-//                        JOptionPane.showMessageDialog(rootPane, "Không được để trống chi tiêu lớn nhất");
-//                        JOptionPane.getRootFrame().dispose();
-//                        txtMaxChiTieu.requestFocus();
-//                    } else {
-//                        try {
-//                            minChiTieu = minChiTieu.replace(",", "");
-//                            maxChiTieu = maxChiTieu.replace(",", "");
-//                            int min = Integer.parseInt(minChiTieu);
-//                            int max = Integer.parseInt(maxChiTieu);
-//
-//                            if(min > max) {
-//                                JOptionPane.showMessageDialog(rootPane, "Chi tiêu nhỏ nhất phải nhỏ hơn chi tiêu lớn nhất");
-//                                JOptionPane.getRootFrame().dispose();
-//                                txtMinChiTieu.requestFocus();
-//                            }
-//                    } catch (Exception ex) {
-//                        JOptionPane.showMessageDialog(rootPane, "Vui lòng nhập chi tiêu với định dạng số!");
-//                        JOptionPane.getRootFrame().dispose();
-//                        txtMinChiTieu.requestFocus();
-//                        } 
-//                    }
-//                }
-//            }
-//        });
-        
+   
         txtTim.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -660,6 +911,152 @@ public class FrmQuanLyKhachHang extends JFrame{
         });
     }
      
+    private void addEventsKhachHangBiXoa() {
+        btnResetBX.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadDataLenBangKhachHangBX();
+                xuLyResetBX();
+            }
+        });
+        
+        btnResetBX.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == 10) {
+                    loadDataLenBangKhachHangBX();
+                    xuLyResetBX();
+                }
+            }
+        });
+
+        btnKhoiPhuc.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == 10) {
+                    xuLyKhoiPhucKhachHang();
+                }
+            }
+        });
+        
+        btnKhoiPhuc.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyKhoiPhucKhachHang();
+            }
+        });
+        
+        btnSuaBX.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == 10) {
+                    xuLySuaKhachHangBX();
+                }
+            }
+        });
+        
+        btnSuaBX.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLySuaKhachHangBX();
+            }
+        });
+        
+        btnXoaVinhVien.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == 10) {
+                    xuLyXoaVinhVienKhachHang();
+                }
+            }
+        });
+        
+        btnXoaVinhVien.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyXoaVinhVienKhachHang();
+            }
+        });
+        
+        btnTimKiemBX.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == 10) {
+                    xuLyTimKiemTheoKhoangBX();
+                }
+            }
+        });
+        
+        btnTimKiemBX.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyTimKiemTheoKhoangBX();
+            }
+        });
+        
+        tblKhachHangBX.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                xuLyChonKhachHangBX();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+              
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+               
+            }
+        });
+
+   
+        txtTimBX.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(txtTimBX.getText().equals(placeholderTimKiem)) {
+                    txtTimBX.setText("");
+                    txtTimBX.setForeground(Color.black);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                    if(txtTimBX.getText().trim().equals("")) {
+                        txtTimBX.setText(placeholderTimKiem);
+                        txtTimBX.setForeground(Color.GRAY);
+                    }
+            }
+        });
+        
+        txtTimBX.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                xuLyLiveSearchBX();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                xuLyLiveSearchBX();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                xuLyLiveSearchBX();
+            }
+        });
+    }
     
      private void loadDataLenBangKhachHang() {
         khachHangBUS.docDanhSach();
@@ -679,6 +1076,28 @@ public class FrmQuanLyKhachHang extends JFrame{
             vec.add(kh.getSoDienThoai());
             vec.add(dcf.format(kh.getTongChiTieu()));
             modelKhachHang.addRow(vec);
+        }
+    }
+    
+    
+     private void loadDataLenBangKhachHangBX() {
+        khachHangBUS.docDanhSachBX();
+        ArrayList<KhachHang> dskh = khachHangBUS.getListKhachHangBX();
+        loadDataLenBangKhachHangBX(dskh);
+    }
+
+    private void loadDataLenBangKhachHangBX(ArrayList<KhachHang> dskh) {
+        modelKhachHangBX.setRowCount(0);
+        DecimalFormat dcf = new DecimalFormat("###,###");
+        for (KhachHang kh : dskh) {
+            Vector vec = new Vector();
+            vec.add(kh.getMaKH());
+            vec.add(kh.getHo());
+            vec.add(kh.getTen());
+            vec.add(kh.getGioiTinh());
+            vec.add(kh.getSoDienThoai());
+            vec.add(dcf.format(kh.getTongChiTieu()));
+            modelKhachHangBX.addRow(vec);
         }
     }
     
@@ -702,6 +1121,27 @@ public class FrmQuanLyKhachHang extends JFrame{
         }
     }
     
+    
+    private void xuLyChonKhachHangBX() {
+        int row = tblKhachHangBX.getSelectedRow();
+        if(row > -1) {
+            String ma = tblKhachHangBX.getValueAt(row, 0) + "";
+            String ho = tblKhachHangBX.getValueAt(row, 1) + "";
+            String ten = tblKhachHangBX.getValueAt(row, 2) + "";
+            String gioiTinh = tblKhachHangBX.getValueAt(row, 3) + "";
+            String sdt = tblKhachHangBX.getValueAt(row, 4) + "";
+            String tongChiTieu = tblKhachHangBX.getValueAt(row, 5) + "";
+            
+            txtMaKHBX.setText(ma);
+            txtHoKHBX.setText(ho);
+            txtTenKHBX.setText(ten);
+            int index = tblKhachHangBX.getValueAt(row, 3).equals("Nam") ? 1 : 2;
+            cmbGioiTinhBX.setSelectedIndex(index);
+            txtSoDienThoaiBX.setText(sdt);
+            txtTongChiTieuBX.setText(tongChiTieu);
+        }
+    }
+    
     public void xuLyReset() {
         txtMaKH.setText("");
         txtHoKH.setText("");
@@ -713,6 +1153,20 @@ public class FrmQuanLyKhachHang extends JFrame{
         txtTim.setForeground(Color.GRAY);
         txtMinChiTieu.setText("");
         txtMaxChiTieu.setText("");
+    }
+    
+    
+    public void xuLyResetBX() {
+        txtMaKHBX.setText("");
+        txtHoKHBX.setText("");
+        txtTenKHBX.setText("");
+        cmbGioiTinhBX.setSelectedIndex(0);
+        txtSoDienThoaiBX.setText("");
+        txtTongChiTieuBX.setText("");
+        txtTimBX.setText(placeholderTimKiem);
+        txtTimBX.setForeground(Color.GRAY);
+        txtMinChiTieuBX.setText("");
+        txtMaxChiTieuBX.setText("");
     }
     
     private void xuLyThemKhachHang() {
@@ -783,6 +1237,41 @@ public class FrmQuanLyKhachHang extends JFrame{
         }
     }
     
+    private void xuLySuaKhachHangBX() {
+        String ma = txtMaKHBX.getText().trim();
+        String ho = txtHoKHBX.getText().trim();
+        String ten = txtTenKHBX.getText().trim();
+        String gioiTinh = cmbGioiTinhBX.getSelectedItem() + "";
+        String sdt = txtSoDienThoaiBX.getText().trim();
+        
+        if(ma.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Chưa chọn khách hàng");
+        } else if(!kiemTraBX(ho, ten, gioiTinh, sdt)) {
+            if(khachHangBUS.kiemTraTrungKhachHang(ho, ten, gioiTinh, sdt)) {
+                int sua = JOptionPane.showConfirmDialog(rootPane, "Thông tin khách hàng này đã tồn tại, bạn có chắc chắn muốn sửa?", "Thông báo trùng thông tin khách hàng khác", JOptionPane.YES_NO_OPTION);
+                if(sua == JOptionPane.YES_OPTION) {
+                    boolean flag = khachHangBUS.suaKhachHang(ma, ho, ten, gioiTinh, sdt);
+                    if(flag) {
+                        JOptionPane.showMessageDialog(rootPane, "Sửa khách hàng thành công");
+                        khachHangBUS.docDanhSachBX();
+                        loadDataLenBangKhachHangBX();
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Sửa khách hàng thất bại");
+                    }
+                }
+            } else {
+                boolean flag = khachHangBUS.suaKhachHang(ma, ho, ten, gioiTinh, sdt);
+                if(flag) {
+                    JOptionPane.showMessageDialog(rootPane, "Sửa khách hàng thành công");
+                    khachHangBUS.docDanhSachBX();
+                    loadDataLenBangKhachHangBX();
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Sửa khách hàng thất bại");
+                }
+            }
+        }
+    }
+    
     private void xuLyXoaKhachHang() {
         String ma = txtMaKH.getText().trim();
         String ho = txtHoKH.getText().trim();
@@ -803,6 +1292,56 @@ public class FrmQuanLyKhachHang extends JFrame{
                     loadDataLenBangKhachHang();
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Xóa thất bại");
+                }
+            }
+        }
+    }
+    
+    private void xuLyXoaVinhVienKhachHang() {
+        String ma = txtMaKHBX.getText().trim();
+        String ho = txtHoKHBX.getText().trim();
+        String ten = txtTenKHBX.getText().trim();
+        String gioiTinh = cmbGioiTinhBX.getSelectedItem() + "";
+        String sdt = txtSoDienThoaiBX.getText().trim();
+        
+        if(ma.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Chưa chọn khách hàng");
+        } else if(!kiemTra(ho, ten, gioiTinh, sdt)) {
+            int flagXoa = JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc chắn muốn xóa vĩnh viễn khách hàng này?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
+            if(flagXoa == JOptionPane.YES_OPTION) {
+                boolean flag = khachHangBUS.xoaKhachHang(ma);
+                if(flag) {
+                    JOptionPane.showMessageDialog(rootPane, "Xóa thành công");
+                    xuLyReset();
+                    khachHangBUS.docDanhSachBX();
+                    loadDataLenBangKhachHangBX();
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Xóa thất bại");
+                }
+            }
+        }
+    }
+    
+    private void xuLyKhoiPhucKhachHang() {
+        String ma = txtMaKHBX.getText().trim();
+        String ho = txtHoKHBX.getText().trim();
+        String ten = txtTenKHBX.getText().trim();
+        String gioiTinh = cmbGioiTinhBX.getSelectedItem() + "";
+        String sdt = txtSoDienThoaiBX.getText().trim();
+        
+        if(ma.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Chưa chọn khách hàng");
+        } else if(!kiemTraBX(ho, ten, gioiTinh, sdt)) {
+            int flagXoa = JOptionPane.showConfirmDialog(rootPane, "Bạn có chắc chắn muốn khôi phục?", "Xác nhận khôi phục", JOptionPane.YES_NO_OPTION);
+            if(flagXoa == JOptionPane.YES_OPTION) {
+                boolean flag = khachHangBUS.khoiPhucKhachHang(ma);
+                if(flag) {
+                    JOptionPane.showMessageDialog(rootPane, "Khôi phục thành công");
+                    xuLyReset();
+                    khachHangBUS.docDanhSachBX();
+                    loadDataLenBangKhachHangBX();
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Khôi phục thất bại");
                 }
             }
         }
@@ -845,6 +1384,46 @@ public class FrmQuanLyKhachHang extends JFrame{
             } 
         }
     }
+    
+    
+    private void xuLyTimKiemTheoKhoangBX() {
+        String minChiTieu = txtMinChiTieuBX.getText().trim();
+        String maxChiTieu = txtMaxChiTieuBX.getText().trim();  
+        ArrayList<KhachHang> dskh = new ArrayList<>();
+        if(minChiTieu.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống chi tiêu nhỏ nhất");
+            txtMinChiTieuBX.requestFocus();
+        } else if (maxChiTieu.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống chi tiêu lớn nhất");
+            txtMaxChiTieuBX.requestFocus();
+        } else {
+            try {
+                minChiTieu = minChiTieu.replace(",", "");
+                maxChiTieu = maxChiTieu.replace(",", "");
+                int min = Integer.parseInt(minChiTieu);
+                int max = Integer.parseInt(maxChiTieu);
+
+                if(min <= max) {
+                    dskh = khachHangBUS.timKiemKhachHang(min, max);    
+                    if(dskh.size() > 0) {
+                        JOptionPane.showMessageDialog(rootPane, "Số kết quả tìm được là " + dskh.size());
+                        loadDataLenBangKhachHangBX(dskh);
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Không tìm thấy khách hàng");
+                        loadDataLenBangKhachHangBX();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Chi tiêu nhỏ nhất phải nhỏ hơn chi tiêu lớn nhất");
+                    txtMinChiTieuBX.requestFocus();
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(rootPane, "Vui lòng nhập chi tiêu với định dạng số!");
+                txtMinChiTieuBX.requestFocus();
+                loadDataLenBangKhachHangBX();
+            } 
+        }
+    }
+    
     private void xuLyLiveSearch() {
         String tuKhoa = txtTim.getText().toLowerCase().trim();
         ArrayList<KhachHang> dskh = khachHangBUS.timKiemKhachHang(tuKhoa);
@@ -852,7 +1431,14 @@ public class FrmQuanLyKhachHang extends JFrame{
         if(tuKhoa.equals(placeholderTimKiem.toLowerCase())) 
             loadDataLenBangKhachHang();
     }
-
+    
+    private void xuLyLiveSearchBX() {
+        String tuKhoa = txtTimBX.getText().toLowerCase().trim();
+        ArrayList<KhachHang> dskh = khachHangBUS.timKiemKhachHang(tuKhoa);
+        loadDataLenBangKhachHangBX(dskh);
+        if(tuKhoa.equals(placeholderTimKiem.toLowerCase())) 
+            loadDataLenBangKhachHangBX();
+    }
     
     private boolean kiemTra(String ho, String ten, String gioiTinh, String sdt) {
         if(ho.equals("")) {
@@ -878,6 +1464,30 @@ public class FrmQuanLyKhachHang extends JFrame{
         return false;
     }
     
+    private boolean kiemTraBX(String ho, String ten, String gioiTinh, String sdt) {
+        if(ho.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Vui lòng nhập họ đệm khách hàng");
+            txtHoKHBX.requestFocus();
+            return true;
+        } else if(ten.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Vui lòng nhập tên khách hàng");
+            txtTenKHBX.requestFocus();
+            return true;
+        } else if(sdt.equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Vui lòng nhập số điện thoại");
+            txtSoDienThoaiBX.requestFocus();
+            return true;
+        } else if(!kiemTraSoDienThoai(sdt)) {
+            JOptionPane.showMessageDialog(rootPane, "Số điện thoại phải có độ dài 10 ký tự và bắt đầu bằng 03,09,...");
+            txtSoDienThoaiBX.requestFocus();
+            return true;
+        } else if (gioiTinh.equals("Chọn giới tính")) {
+            JOptionPane.showMessageDialog(rootPane, "Vui lòng chọn giới tính");
+            return true;
+        } 
+        return false;
+    }
+    
     private boolean kiemTraSoDienThoai(String sdt) {
         Pattern pattern = Pattern.compile("^0\\d{9}$");
         Matcher matcher = pattern.matcher(sdt);
@@ -889,6 +1499,3 @@ public class FrmQuanLyKhachHang extends JFrame{
         new FrmQuanLyKhachHang();
     }
 }
-
-
-//comit , rollback 

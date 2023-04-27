@@ -2,14 +2,13 @@ package BUS;
 
 import DAO.KhachHangDAO;
 import DTO.KhachHang;
-import Customs.MyDialog;
 
 import java.util.ArrayList;
 
 public class KhachHangBUS {
 
     private ArrayList<KhachHang> listKhachHang = null;
-    private KhachHangDAO khachHangDAO = new KhachHangDAO();
+    private final KhachHangDAO khachHangDAO = new KhachHangDAO();
 
     public void docDanhSach() {
         this.listKhachHang = khachHangDAO.getListKhachHang();
@@ -18,6 +17,16 @@ public class KhachHangBUS {
     public ArrayList<KhachHang> getListKhachHang() {
         if (listKhachHang == null)
             docDanhSach();
+        return listKhachHang;
+    }
+    
+    public void docDanhSachBX() {
+        this.listKhachHang = khachHangDAO.getListKhachHangBiXoa();
+    }
+
+    public ArrayList<KhachHang> getListKhachHangBX() {
+        if (listKhachHang == null)
+            docDanhSachBX();
         return listKhachHang;
     }
 
@@ -90,6 +99,30 @@ public class KhachHangBUS {
         try {
             int maKH = Integer.parseInt(ma);
             flag = khachHangDAO.xoaKhachHang(maKH);
+        } catch (Exception e) {
+           return false;
+        }
+        return flag;
+    }
+    
+
+    public boolean xoaKhachHangVinhVien(String ma) {
+        boolean flag = false;
+        try {
+            int maKH = Integer.parseInt(ma);
+            flag = khachHangDAO.xoaKhachHangVinhVien(maKH);
+        } catch (Exception e) {
+           return false;
+        }
+        return flag;
+    }
+    
+
+    public boolean khoiPhucKhachHang(String ma) {
+        boolean flag = false;
+        try {
+            int maKH = Integer.parseInt(ma);
+            flag = khachHangDAO.khoiPhucKhachHang(maKH);
         } catch (Exception e) {
            return false;
         }

@@ -108,6 +108,20 @@ public class KhachHangDAO {
         return result;
     }
 
+
+    public boolean khoiPhucKhachHang(int maKH) {
+        boolean result = false;
+        try {
+            String sql = "UPDATE khachhang SET TinhTrang=1 WHERE MaKH=?";
+            PreparedStatement prep = MyConnect.conn.prepareStatement(sql);
+            prep.setInt(1, maKH);
+            result = prep.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            return false;
+        }
+        return result;
+    }
+
     public boolean xoaKhachHangVinhVien(int maKH) {
         boolean result = false;
         try {
