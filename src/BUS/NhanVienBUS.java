@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class NhanVienBUS {
 
     private NhanVienDAO nvDAO = new NhanVienDAO();
+    private TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
     private ArrayList<NhanVien> listNhanVien = null;
 
     public NhanVienBUS() {
@@ -47,21 +48,26 @@ public class NhanVienBUS {
     }
 
     public ArrayList<NhanVien> timKiemNhanVien(String tuKhoa) {
-        
-        if(tuKhoa.isEmpty()) {
-            return listNhanVien;
-        } else {
-            tuKhoa = tuKhoa.toLowerCase();
-            ArrayList<NhanVien> dsnv = new ArrayList<>();
-            for (NhanVien nv : listNhanVien) {
-                if (nv.getHo().toLowerCase().contains(tuKhoa) || nv.getTen().toLowerCase().contains(tuKhoa) ||
-                        nv.getGioiTinh().toLowerCase().contains(tuKhoa) || nv.getChucVu().toLowerCase().contains(tuKhoa)) {
-                    dsnv.add(nv);
-                }
+        String taiKhoan = "";
+        ArrayList<NhanVien> dsnv = new ArrayList<>();
+        for (NhanVien nv : listNhanVien) {
+            int trangThai = taiKhoanBUS.getTrangThai(nv.getMaNV() + "");
+            if (trangThai == 0) {
+                taiKhoan = "Khóa";
             }
-            return dsnv;
+            else if(trangThai == 1) {
+                taiKhoan = "Hiệu lực";
+            }
+            else {
+                taiKhoan = "Chưa có";
+            }
+            
+            if (nv.getHo().toLowerCase().contains(tuKhoa) || nv.getTen().toLowerCase().contains(tuKhoa) ||
+                    nv.getGioiTinh().toLowerCase().contains(tuKhoa) || nv.getChucVu().toLowerCase().contains(tuKhoa) || taiKhoan.toLowerCase().contains(tuKhoa)) {
+                dsnv.add(nv);
+            }
         }
-        
+        return dsnv;
     }
 
     public boolean xoaNhanVien(String ma) {

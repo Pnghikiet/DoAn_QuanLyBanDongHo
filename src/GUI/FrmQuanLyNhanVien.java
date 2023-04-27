@@ -949,12 +949,13 @@ public final class FrmQuanLyNhanVien extends JFrame{
     
     //    Phương thức của pnlNhanVien
      private void loadDataLenBangNhanVien() {
-        modelNhanVien.setRowCount(0);
+         NhanVienBUS.docDanhSach();
         ArrayList<NhanVien> dsnv = NhanVienBUS.getDanhSachNhanVien();
          loadDataLenBangNhanVien(dsnv);
     }
  
      private void loadDataLenBangNhanVien(ArrayList<NhanVien> dsnv) {
+        modelNhanVien.setRowCount(0);
          for (NhanVien nv : dsnv) {
             Vector vec = new Vector();
             vec.add(nv.getMaNV());
@@ -1265,7 +1266,7 @@ public final class FrmQuanLyNhanVien extends JFrame{
         String tukhoa = txtTim.getText().toLowerCase().trim();
         ArrayList<NhanVien> dsnv = NhanVienBUS.timKiemNhanVien(tukhoa);
         loadDataLenBangNhanVien(dsnv);
-        if(tukhoa.equals(placeholderTimKiem.toLowerCase())) 
+        if(tukhoa.equals(placeholderTimKiem.toLowerCase().trim())) 
             loadDataLenBangNhanVien();
     }
     
