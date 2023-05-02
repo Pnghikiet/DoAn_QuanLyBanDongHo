@@ -347,6 +347,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         txtareamota.setBounds(160, 30, 150, 150);
         txtareamota.setBorder(BorderFactory.createLineBorder(Color.black));
         txtareamota.setLineWrap(true);
+        txtareamota.setEditable(false);
         pnlmota_hinhanh.add(txtareamota);
         
         btnnhapsanpham.setBounds( 70, 565, 175, 22);
