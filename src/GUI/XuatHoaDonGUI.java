@@ -2,6 +2,7 @@ package GUI;
 
 import BUS.CTHoaDonBUS;
 import BUS.HoaDonBUS;
+import BUS.SanPhamBUS;
 import Customs.MyDialog;
 
 import java.awt.Image;
@@ -21,6 +22,7 @@ public class XuatHoaDonGUI extends JDialog {
     private HoaDonBUS hoadonBUS = new HoaDonBUS();
     private CTHoaDonBUS ctHoaDonBUS = new CTHoaDonBUS();
     private DlgTimKhach timKhachUI = new DlgTimKhach();
+    private SanPhamBUS spBUS = new SanPhamBUS();
     private DlgTimMaGiam timMaUI;
 
     public XuatHoaDonGUI() {
@@ -331,14 +333,18 @@ public class XuatHoaDonGUI extends JDialog {
         xuLyHienThiHoaDon();
         btnInHoaDon.setEnabled(true);
 
-        hoadonBUS.luuHoaDon(DlgTimKhach.khachHangTimDuoc.getMaKH(), nhanVien, tongTien, "Đã thanh toán");
-
+        int maGG = 0;
+        maGG = timMaUI.maGiamTimDuoc.getMaGG();
+        
+        hoadonBUS.luuHoaDon(DlgTimKhach.khachHangTimDuoc.getMaKH(), nhanVien, tongTien, "Đã thanh toán", maGG);
+        
         for (Vector vec : dsGioHang) {
             String maSP = vec.get(0) + "";
             String soLuong = vec.get(2) + "";
             String donGia = vec.get(3) + "";
             String thanhTien = vec.get(4) + "";
             ctHoaDonBUS.addCTHoaDon(maSP, soLuong, donGia, thanhTien);
+            spBUS.capNhatSoLuongSP(Integer.parseInt(maSP), - Integer.parseInt(soLuong));
         }
         btnThanhToan.setEnabled(false);
         btnTimMaGiam.setEnabled(false);

@@ -8,17 +8,19 @@ public class HoaDon {
     private int maNV;
     private Date ngayLap;
     private int tongTien;
+    private int maGG;
     private String ghiChu;
 
     public HoaDon() {
     }
 
-    public HoaDon(int maHD, int maKH, int maNV, Date ngayLap, int tongTien, String ghiChu) {
+    public HoaDon(int maHD, int maKH, int maNV, Date ngayLap, int tongTien, int maGG, String ghiChu) {
         this.maHD = maHD;
         this.maKH = maKH;
         this.maNV = maNV;
         this.ngayLap = ngayLap;
         this.tongTien = tongTien;
+        this.maGG = maGG;
         this.ghiChu = ghiChu;
     }
 
@@ -48,6 +50,14 @@ public class HoaDon {
 
     public Date getNgayLap() {
         return ngayLap;
+    }
+
+    public int getMaGG() {
+        return maGG;
+    }
+
+    public void setMaGG(int maGG) {
+        this.maGG = maGG;
     }
 
     public void setNgayLap(Date ngayLap) {

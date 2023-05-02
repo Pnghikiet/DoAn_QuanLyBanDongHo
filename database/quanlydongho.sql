@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 25, 2023 lúc 05:12 AM
--- Phiên bản máy phục vụ: 10.4.25-MariaDB
--- Phiên bản PHP: 8.1.10
+-- Thời gian đã tạo: Th5 02, 2023 lúc 12:52 PM
+-- Phiên bản máy phục vụ: 10.4.17-MariaDB
+-- Phiên bản PHP: 7.3.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `quanlydongho`
 --
-CREATE DATABASE IF NOT EXISTS `quanlydongho` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `quanlydongho` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `quanlydongho`;
 
 -- --------------------------------------------------------
@@ -88,7 +88,8 @@ CREATE TABLE `giamgia` (
 --
 
 INSERT INTO `giamgia` (`MaGG`, `TenGG`, `PhanTramGiam`, `DieuKien`, `NgayBD`, `NgayKT`) VALUES
-(1, 'Không giảm giá', 0, 0, '2023-02-26', '2028-12-31');
+(1, 'Không giảm giá', 0, 0, '2023-02-26', '2023-12-15'),
+(3, 'Khuyến mãi tháng 5', 10, 150000, '2023-05-02', '2023-05-31');
 
 -- --------------------------------------------------------
 
@@ -103,6 +104,7 @@ CREATE TABLE `hoadon` (
   `MaKH` int(11) NOT NULL,
   `NgayLap` date NOT NULL,
   `TongTien` int(11) NOT NULL,
+  `MaGG` int(11) NOT NULL,
   `GhiChu` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -110,8 +112,8 @@ CREATE TABLE `hoadon` (
 -- Đang đổ dữ liệu cho bảng `hoadon`
 --
 
-INSERT INTO `hoadon` (`MaHD`, `MaNV`, `MaKH`, `NgayLap`, `TongTien`, `GhiChu`) VALUES
-(1, 1, 1, '2023-02-28', 1607000, 'Đã thanh toán');
+INSERT INTO `hoadon` (`MaHD`, `MaNV`, `MaKH`, `NgayLap`, `TongTien`, `MaGG`, `GhiChu`) VALUES
+(1, 1, 1, '2023-02-28', 1607000, 1, 'Đã thanh toán');
 
 -- --------------------------------------------------------
 
@@ -135,7 +137,10 @@ CREATE TABLE `khachhang` (
 --
 
 INSERT INTO `khachhang` (`MaKH`, `Ho`, `Ten`, `GioiTinh`, `SoDienThoai`, `TongChiTieu`, `TinhTrang`) VALUES
-(1, 'Tôn Thành', 'Tâm', 'Nam', '0396265413', 0, 1);
+(1, 'Tôn Thành', 'Tâm', 'Nam', '0396265413', 0, 1),
+(2, 'Nguyễn Thị Thùy', 'Linh', 'Nữ', '0396371021', 0, 1),
+(3, 'Phan Mạnh', 'Quỳnh', 'Nam', '0396775066', 0, 1),
+(4, 'Tôn Thọ', 'Hưng', 'Nam', '0396356659', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -202,7 +207,8 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`MaNV`, `Ho`, `Ten`, `GioiTinh`, `ChucVu`) VALUES
-(1, 'Admin', NULL, NULL, 'Admin');
+(1, 'Admin', ' ', ' ', 'Admin'),
+(26, 'Tôn Thành', 'Tâm', 'Nam', 'nhân viên');
 
 -- --------------------------------------------------------
 
@@ -217,18 +223,19 @@ CREATE TABLE `phanquyen` (
   `QLSanPham` int(1) NOT NULL DEFAULT 0,
   `QLNhanVien` int(1) NOT NULL DEFAULT 0,
   `QLKhachHang` int(1) NOT NULL DEFAULT 0,
-  `ThongKe` int(1) NOT NULL DEFAULT 0
+  `ThongKe` int(1) NOT NULL DEFAULT 0,
+  `QLKhuyenMai` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `phanquyen`
 --
 
-INSERT INTO `phanquyen` (`Quyen`, `NhapHang`, `QLSanPham`, `QLNhanVien`, `QLKhachHang`, `ThongKe`) VALUES
-('Default', 0, 0, 0, 0, 0),
-('Nhân viên', 0, 0, 0, 1, 0),
-('Quản lý', 1, 0, 1, 1, 1),
-('Quản trị', 1, 1, 1, 1, 1);
+INSERT INTO `phanquyen` (`Quyen`, `NhapHang`, `QLSanPham`, `QLNhanVien`, `QLKhachHang`, `ThongKe`, `QLKhuyenMai`) VALUES
+('Default', 0, 0, 0, 0, 0, 0),
+('Nhân viên', 1, 0, 0, 1, 0, 0),
+('Quản lý', 1, 0, 1, 1, 1, 1),
+('Quản trị', 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -340,7 +347,8 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` (`MaNV`, `TaiKhoan`, `MatKhau`, `Quyen`, `TrangThai`) VALUES
-(1, 'admin', 'admin', 'Quản trị', 1);
+(1, 'admin', 'admin', 'Quản trị', 1),
+(26, 'nv01', 'nv01', 'Nhân viên', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -372,7 +380,8 @@ ALTER TABLE `giamgia`
 ALTER TABLE `hoadon`
   ADD PRIMARY KEY (`MaHD`),
   ADD KEY `hoadon_ibfk_1` (`MaKH`),
-  ADD KEY `hoadon_ibfk_2` (`MaNV`);
+  ADD KEY `hoadon_ibfk_2` (`MaNV`),
+  ADD KEY `hoadon_ibfk_3` (`MaGG`);
 
 --
 -- Chỉ mục cho bảng `khachhang`
@@ -435,7 +444,7 @@ ALTER TABLE `taikhoan`
 -- AUTO_INCREMENT cho bảng `giamgia`
 --
 ALTER TABLE `giamgia`
-  MODIFY `MaGG` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MaGG` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `hoadon`
@@ -447,7 +456,7 @@ ALTER TABLE `hoadon`
 -- AUTO_INCREMENT cho bảng `khachhang`
 --
 ALTER TABLE `khachhang`
-  MODIFY `MaKH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MaKH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `loai`
@@ -465,7 +474,7 @@ ALTER TABLE `nhacungcap`
 -- AUTO_INCREMENT cho bảng `nhanvien`
 --
 ALTER TABLE `nhanvien`
-  MODIFY `MaNV` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `MaNV` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `phieunhap`
@@ -502,13 +511,8 @@ ALTER TABLE `ctphieunhap`
 --
 ALTER TABLE `hoadon`
   ADD CONSTRAINT `hoadon_ibfk_1` FOREIGN KEY (`MaKH`) REFERENCES `khachhang` (`MaKH`),
-  ADD CONSTRAINT `hoadon_ibfk_2` FOREIGN KEY (`MaNV`) REFERENCES `nhanvien` (`MaNV`);
-
---
--- Các ràng buộc cho bảng `nhanvien`
---
-ALTER TABLE `nhanvien`
-  ADD CONSTRAINT `nhanvien_ibfk_2` FOREIGN KEY (`MaNV`) REFERENCES `taikhoan` (`MaNV`);
+  ADD CONSTRAINT `hoadon_ibfk_2` FOREIGN KEY (`MaNV`) REFERENCES `nhanvien` (`MaNV`),
+  ADD CONSTRAINT `hoadon_ibfk_3` FOREIGN KEY (`MaGG`) REFERENCES `giamgia` (`MaGG`);
 
 --
 -- Các ràng buộc cho bảng `phieunhap`

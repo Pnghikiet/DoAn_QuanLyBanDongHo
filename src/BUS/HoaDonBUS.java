@@ -13,18 +13,31 @@ public class HoaDonBUS {
     private ArrayList<HoaDon> listHoaDon;
     private HoaDonDAO hoaDonDAO = new HoaDonDAO();
 
+    public HoaDonBUS()
+    {
+        docDanhSach();
+    }
+    
+    public void docDanhSach() {
+        this.listHoaDon = hoaDonDAO.getListHoaDon();
+    }
+    
     public ArrayList<HoaDon> getListHoaDon() {
-        listHoaDon = hoaDonDAO.getListHoaDon();
+        if(listHoaDon == null)
+        {
+            docDanhSach();
+        }
         return listHoaDon;
     }
 
-    public void luuHoaDon(int maKH, String nhanVien, int tongTien, String ghiChu) {
+    public void luuHoaDon(int maKH, String nhanVien, int tongTien, String ghiChu, int maGG) {
         HoaDon hd = new HoaDon();
         String[] arrNV = nhanVien.split(" - ");
         int maNV = Integer.parseInt(arrNV[0]);
         hd.setMaNV(maNV);
         hd.setMaKH(maKH);
         hd.setGhiChu(ghiChu);
+        hd.setMaGG(maGG);
         hd.setTongTien(tongTien);
 
         hoaDonDAO.themHoaDon(hd);

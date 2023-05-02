@@ -59,4 +59,8 @@ public class MyConnect {
         } catch (Exception e) {
         }
     }
+    
+    public static void main(String[] args) {
+        new MyConnect();
+    }
 }
