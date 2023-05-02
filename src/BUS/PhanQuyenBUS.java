@@ -2,7 +2,6 @@ package BUS;
 
 import DAO.PhanQuyenDAO;
 import DTO.PhanQuyen;
-import Customs.MyDialog;
 
 import java.util.ArrayList;
 
@@ -12,67 +11,42 @@ public class PhanQuyenBUS {
     private PhanQuyenDAO phanQuyenDAO = new PhanQuyenDAO();
     private ArrayList<PhanQuyen> listPhanQuyen = null;
 
-    public void docDanhSachQuyen() {
+    public void docDanhSachNhomQuyen() {
         this.listPhanQuyen = phanQuyenDAO.getListQuyen();
     }
 
-    public void kiemTraQuyen(String quyen) {
+    public void kiemTraNhomQuyen(String quyen) {
         quyenTK = phanQuyenDAO.getQuyen(quyen);
     }
 
-    public ArrayList<PhanQuyen> getListQuyen() {
+    public ArrayList<PhanQuyen> getListNhomQuyen() {
         if (listPhanQuyen == null)
-            docDanhSachQuyen();
+            docDanhSachNhomQuyen();
         return this.listPhanQuyen;
     }
 
-    public boolean suaQuyen(String tenQuyen, int nhapHang, int sanPham, int nhanVien, int khachHang, int thongKe) {
-        PhanQuyen phanQuyen = new PhanQuyen(tenQuyen, nhapHang, sanPham, nhanVien, khachHang, thongKe);
-        boolean flag = phanQuyenDAO.suaQuyen(phanQuyen);
-        if (flag) {
-            new MyDialog("Sửa thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Sửa thất bại!", MyDialog.ERROR_DIALOG);
-        }
+    public boolean suaNhomQuyen(String tenNhomQuyen, int nhapHang, int sanPham, int nhanVien, int khachHang, int thongKe) {
+        PhanQuyen phanQuyen = new PhanQuyen(tenNhomQuyen, nhapHang, sanPham, nhanVien, khachHang, thongKe);
+        return phanQuyenDAO.suaNhomQuyen(phanQuyen);
+    }
+
+    public boolean themNhomQuyen(String tenNhomQuyen) {
+        PhanQuyen phanQuyen = new PhanQuyen(tenNhomQuyen, 0, 0, 0, 0, 0);
+        boolean flag = phanQuyenDAO.themNhomQuyen(phanQuyen);
         return flag;
     }
 
-    public boolean themQuyen(String tenQuyen) {
-        if (tenQuyen == null || tenQuyen.trim().equals("")) {
-            return false;
-        }
-
-        if (kiemTonTaiTraQuyen(tenQuyen)) {
-            new MyDialog("Thêm thất bại! Quyền đã tồn tại", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-
-        PhanQuyen phanQuyen = new PhanQuyen(tenQuyen, 0, 0, 0, 0, 0);
-        boolean flag = phanQuyenDAO.themQuyen(phanQuyen);
-        if (flag) {
-            new MyDialog("Thêm thành công! Hãy hiệu chỉnh quyền", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Thêm thất bại! Quyền đã tồn tại", MyDialog.ERROR_DIALOG);
-        }
-        return flag;
-    }
-
-    private boolean kiemTonTaiTraQuyen(String tenQuyen) {
-        docDanhSachQuyen();
+    private boolean kiemTraTrungTenNhomQuyen(String tenNhomQuyen) {
+        docDanhSachNhomQuyen();
         for (PhanQuyen q : listPhanQuyen) {
-            if (q.getQuyen().equalsIgnoreCase(tenQuyen))
+            if (q.getQuyen().equalsIgnoreCase(tenNhomQuyen))
                 return true;
         }
         return false;
     }
 
-    public boolean xoaQuyen(String tenQuyen) {
-        boolean flag = phanQuyenDAO.xoaQuyen(tenQuyen);
-        if (flag) {
-            new MyDialog("Xoá thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Xoá thất bại!", MyDialog.ERROR_DIALOG);
-        }
+    public boolean xoaNhomQuyen(String tenNhomQuyen) {
+        boolean flag = phanQuyenDAO.xoaNhomQuyen(tenNhomQuyen);
         return flag;
     }
 }

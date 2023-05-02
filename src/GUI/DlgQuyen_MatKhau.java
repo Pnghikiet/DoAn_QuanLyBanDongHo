@@ -7,6 +7,7 @@ import Customs.MyDialog;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class DlgQuyen_MatKhau extends javax.swing.JDialog {
@@ -41,8 +42,8 @@ public class DlgQuyen_MatKhau extends javax.swing.JDialog {
         txtMatKhau_TenDangNhap.setText(tenDangNhap);
 
         cmbQuyen.removeAllItems();
-        phanQuyenBUS.docDanhSachQuyen();
-        ArrayList<PhanQuyen> dsq = phanQuyenBUS.getListQuyen();
+        phanQuyenBUS.docDanhSachNhomQuyen();
+        ArrayList<PhanQuyen> dsq = phanQuyenBUS.getListNhomQuyen();
         for (PhanQuyen pq : dsq) {
             cmbQuyen.addItem(pq.getQuyen());
         }
@@ -234,11 +235,21 @@ public class DlgQuyen_MatKhau extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCapMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapMatKhauActionPerformed
-        taiKhoanBUS.datLaiMatKhau(maNV, txtMatKhau_TenDangNhap.getText());
+       boolean flag = taiKhoanBUS.datLaiMatKhau(maNV, txtMatKhau_TenDangNhap.getText().trim());
+       if(flag) {
+           JOptionPane.showMessageDialog(rootPane, "Cập nhật mật khẩu thành công");
+       } else {
+            JOptionPane.showMessageDialog(rootPane, "Cập nhật mật khẩu thất bại");
+       }
     }//GEN-LAST:event_btnCapMatKhauActionPerformed
 
     private void btnLuuQuyenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuQuyenActionPerformed
-        taiKhoanBUS.datLaiQuyen(maNV, cmbQuyen.getSelectedItem() + "");
+        boolean flag = taiKhoanBUS.datLaiQuyen(maNV, cmbQuyen.getSelectedItem() + "");
+        if(flag) {
+           JOptionPane.showMessageDialog(rootPane, "Chỉnh sửa quyền thành công");
+       } else {
+            JOptionPane.showMessageDialog(rootPane, "Chỉnh sửa quyền thất bại");
+       }
     }//GEN-LAST:event_btnLuuQuyenActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

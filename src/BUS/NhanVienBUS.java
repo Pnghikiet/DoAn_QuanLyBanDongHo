@@ -2,13 +2,13 @@ package BUS;
 
 import DAO.NhanVienDAO;
 import DTO.NhanVien;
-import Customs.MyDialog;
 
 import java.util.ArrayList;
 
 public class NhanVienBUS {
 
     private NhanVienDAO nvDAO = new NhanVienDAO();
+    private TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
     private ArrayList<NhanVien> listNhanVien = null;
 
     public NhanVienBUS() {
@@ -25,84 +25,45 @@ public class NhanVienBUS {
         return this.listNhanVien;
     }
 
-    
-    public String getQuyenTheoMa(String ma) {
-        int maNV = Integer.parseInt(ma);
-        return nvDAO.getQuyenTheoMa(maNV);
-    }
-    
-    
-    public void datLaiQuyen(String ma, String quyen) {
-        int maNV = Integer.parseInt(ma);
-        boolean flag = nvDAO.datLaiQuyen(maNV, quyen);
-        if (flag) {
-            new MyDialog("Đặt lại thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Đặt lại thất bại!", MyDialog.ERROR_DIALOG);
-        }
-    }
-
-    
-    public boolean themNhanVien(String ho, String ten, String gioiTinh, String Quyen) {
-        ho = ho.trim();
-        ten = ten.trim();
-        Quyen = Quyen.trim();
-        if (ten.equals("")) {
-            new MyDialog("Tên không được để trống!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (Quyen.equals("")) {
-            new MyDialog("Chức vụ không được để trống!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
+    public boolean themNhanVien(String ho, String ten, String gioiTinh, String ChucVu) {
         NhanVien nv = new NhanVien();
         nv.setHo(ho);
         nv.setTen(ten);
         nv.setGioiTinh(gioiTinh);
-        nv.setQuyen(Quyen);
+        nv.setChucVu(ChucVu);
         boolean flag = nvDAO.themNhanVien(nv);
-        if (!flag) {
-            new MyDialog("Thêm thất bại!", MyDialog.ERROR_DIALOG);
-        } else {
-            new MyDialog("Thêm thành công!", MyDialog.SUCCESS_DIALOG);
-        }
         return flag;
     }
 
-    public boolean updateNhanVien(String ma, String ho, String ten, String gioiTinh, String Quyen) {
-        int maNV = Integer.parseInt(ma);
-        ho = ho.trim();
-        ten = ten.trim();
-        Quyen = Quyen.trim();
-        if (ten.equals("")) {
-            new MyDialog("Tên không được để trống!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (Quyen.equals("")) {
-            new MyDialog("Chức vụ không được để trống!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
+    public boolean suaNhanVien(String ma, String ho, String ten, String gioiTinh, String ChucVu) {
         NhanVien nv = new NhanVien();
+        int maNV = Integer.parseInt(ma);
         nv.setMaNV(maNV);
         nv.setHo(ho);
         nv.setTen(ten);
         nv.setGioiTinh(gioiTinh);
-        nv.setQuyen(Quyen);
+        nv.setChucVu(ChucVu);
         boolean flag = nvDAO.suaNhanVien(nv);
-        if (!flag) {
-            new MyDialog("Cập nhập thất bại!", MyDialog.ERROR_DIALOG);
-        } else {
-            new MyDialog("Cập nhập thành công!", MyDialog.SUCCESS_DIALOG);
-        }
         return flag;
     }
 
-    public ArrayList<NhanVien> timNhanVien(String tuKhoa) {
-        tuKhoa = tuKhoa.toLowerCase();
+    public ArrayList<NhanVien> timKiemNhanVien(String tuKhoa) {
+        String taiKhoan = "";
         ArrayList<NhanVien> dsnv = new ArrayList<>();
         for (NhanVien nv : listNhanVien) {
+            int trangThai = taiKhoanBUS.getTrangThai(nv.getMaNV() + "");
+            if (trangThai == 0) {
+                taiKhoan = "Khóa";
+            }
+            else if(trangThai == 1) {
+                taiKhoan = "Hiệu lực";
+            }
+            else {
+                taiKhoan = "Chưa có";
+            }
+            
             if (nv.getHo().toLowerCase().contains(tuKhoa) || nv.getTen().toLowerCase().contains(tuKhoa) ||
-                    nv.getGioiTinh().toLowerCase().contains(tuKhoa) || nv.getQuyen().toLowerCase().contains(tuKhoa)) {
+                    nv.getGioiTinh().toLowerCase().contains(tuKhoa) || nv.getChucVu().toLowerCase().contains(tuKhoa) || taiKhoan.toLowerCase().contains(tuKhoa)) {
                 dsnv.add(nv);
             }
         }
@@ -110,32 +71,38 @@ public class NhanVienBUS {
     }
 
     public boolean xoaNhanVien(String ma) {
-        try {
-            int maNV = Integer.parseInt(ma);
-            MyDialog dlg = new MyDialog("Bạn có chắc chắn muốn xoá?", MyDialog.WARNING_DIALOG);
-            boolean flag = false;
-            if (dlg.getAction() == MyDialog.OK_OPTION) {
-                flag = nvDAO.xoaNhanVien(maNV);
-                if (flag) {
-                    new MyDialog("Xoá thành công!", MyDialog.SUCCESS_DIALOG);
-                } else {
-                    new MyDialog("Xoá thất bại!", MyDialog.ERROR_DIALOG);
-                }
-            }
-            return flag;
-        } catch (Exception e) {
-            new MyDialog("Chưa chọn nhân viên!", MyDialog.ERROR_DIALOG);
-        }
-        return false;
+        int maNV = Integer.parseInt(ma);
+        boolean flag = nvDAO.xoaNhanVien(maNV);
+        return flag;
     }
 
-    public boolean nhapExcel(String ho, String ten, String gioiTinh, String Quyen) {
+    public boolean nhapExcel(String ho, String ten, String gioiTinh, String ChucVu) {
         NhanVien nv = new NhanVien();
         nv.setHo(ho);
         nv.setTen(ten);
         nv.setGioiTinh(gioiTinh);
-        nv.setQuyen(Quyen);
+        nv.setChucVu(ChucVu);
         boolean flag = nvDAO.nhapNhanVienTuExcel(nv);
         return flag;
     }
+    
+    
+    public boolean kiemTraTrungNhanVien(String ho, String ten, String gioitinh, String cv) {
+        gioitinh = gioitinh.toLowerCase();
+        ho = ho.toLowerCase();
+        ten = ten.toLowerCase();
+        cv = cv.toLowerCase();
+        for (NhanVien NV : listNhanVien) {
+            String hoNV = NV.getHo().toLowerCase();
+            String tenNV = NV.getTen().toLowerCase();
+            String gioitinhNV = NV.getGioiTinh().toLowerCase();
+            String cvNV = NV.getChucVu();
+            
+            if(hoNV.equals(ho) && tenNV.equals(ten) && gioitinhNV.equals(gioitinh) && cvNV.equals(cv)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

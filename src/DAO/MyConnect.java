@@ -43,7 +43,7 @@ public class MyConnect {
         password = "";
 
         try {
-            FileInputStream fis = new FileInputStream("ConnectVariable.txt");
+            FileInputStream fis = new FileInputStream("ConnectDatabase.txt");
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
 

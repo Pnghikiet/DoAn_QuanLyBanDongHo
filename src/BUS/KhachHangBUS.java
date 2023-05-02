@@ -2,15 +2,13 @@ package BUS;
 
 import DAO.KhachHangDAO;
 import DTO.KhachHang;
-import Customs.MyDialog;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class KhachHangBUS {
 
     private ArrayList<KhachHang> listKhachHang = null;
-    private KhachHangDAO khachHangDAO = new KhachHangDAO();
+    private final KhachHangDAO khachHangDAO = new KhachHangDAO();
 
     public void docDanhSach() {
         this.listKhachHang = khachHangDAO.getListKhachHang();
@@ -21,26 +19,25 @@ public class KhachHangBUS {
             docDanhSach();
         return listKhachHang;
     }
+    
+    public void docDanhSachBX() {
+        this.listKhachHang = khachHangDAO.getListKhachHangBiXoa();
+    }
 
-    public ArrayList<KhachHang> timKiemKhachHang(String txtMin, String txtMax) {
-        if (txtMax.trim().equals("") && txtMin.trim().equals(""))
-            return listKhachHang;
-        try {
-            ArrayList<KhachHang> dskh = new ArrayList<>();
-            txtMin = txtMin.replace(",", "");
-            txtMax = txtMax.replace(",", "");
-            int min = Integer.parseInt(txtMin);
-            int max = Integer.parseInt(txtMax);
-            for (KhachHang kh : listKhachHang) {
-                if (kh.getTongChiTieu() >= min && kh.getTongChiTieu() <= max) {
-                    dskh.add(kh);
-                }
+    public ArrayList<KhachHang> getListKhachHangBX() {
+        if (listKhachHang == null)
+            docDanhSachBX();
+        return listKhachHang;
+    }
+
+    public ArrayList<KhachHang> timKiemKhachHang(int min, int max) {
+        ArrayList<KhachHang> dskh = new ArrayList<>();
+        for (KhachHang kh : listKhachHang) {
+            if (kh.getTongChiTieu() >= min && kh.getTongChiTieu() <= max) {
+                dskh.add(kh);
             }
-            return dskh;
-        } catch (Exception e) {
-            new MyDialog("Hãy nhập giá trị nguyên phù hợp!", MyDialog.ERROR_DIALOG);
         }
-        return null;
+        return dskh;
     }
 
     public ArrayList<KhachHang> timKiemKhachHang(String tuKhoa) {
@@ -50,55 +47,50 @@ public class KhachHangBUS {
             String ho = kh.getHo().toLowerCase();
             String ten = kh.getTen().toLowerCase();
             String gioiTinh = kh.getGioiTinh().toLowerCase();
-            if (ho.contains(tuKhoa) || ten.contains(tuKhoa) || gioiTinh.contains(tuKhoa)) {
+            String sdt = kh.getSoDienThoai();
+            if (ho.contains(tuKhoa) || ten.contains(tuKhoa) || gioiTinh.contains(tuKhoa) || sdt.contains(tuKhoa)) {
                 dskh.add(kh);
             }
         }
         return dskh;
     }
+    
+    public boolean kiemTraTrungKhachHang(String ho, String ten, String gioitinh, String sdt) {
+        gioitinh = gioitinh.toLowerCase();
+        ho = ho.toLowerCase();
+        ten = ten.toLowerCase();
+        sdt = sdt.toLowerCase();
+        for (KhachHang kh : listKhachHang) {
+            String hoKH = kh.getHo().toLowerCase();
+            String tenKH = kh.getTen().toLowerCase();
+            String gioitinhKH = kh.getGioiTinh().toLowerCase();
+            String sdtKH = kh.getSoDienThoai();
+            
+            if(hoKH.equals(ho) && tenKH.equals(ten) && gioitinhKH.equals(gioitinh) && sdtKH.equals(sdt)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-    public boolean themKhachHang(String ho, String ten, String gioiTinh) {
-        if (ten.trim().equals("")) {
-            new MyDialog("Không được để trống tên!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (gioiTinh.equals("Chọn giới tính")) {
-            new MyDialog("Hãy chọn giới tính!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
+    public boolean themKhachHang(String ho, String ten, String gioiTinh, String sdt) {
         KhachHang kh = new KhachHang();
         kh.setHo(ho);
         kh.setTen(ten);
         kh.setGioiTinh(gioiTinh);
+        kh.setSoDienThoai(sdt);
         kh.setTongChiTieu(0);
         boolean flag = khachHangDAO.themKhachHang(kh);
-        if (flag) {
-            new MyDialog("Thêm thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Thêm thất bại!", MyDialog.ERROR_DIALOG);
-        }
         return flag;
     }
 
-    public boolean suaKhachHang(String ma, String ho, String ten, String gioiTinh) {
-        if (ten.trim().equals("")) {
-            new MyDialog("Không được để trống tên!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (gioiTinh.equals("Chọn giới tính")) {
-            new MyDialog("Hãy chọn giới tính!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
+    public boolean suaKhachHang(String ma, String ho, String ten, String gioiTinh, String sdt) {
         KhachHang kh = new KhachHang();
         kh.setHo(ho);
         kh.setTen(ten);
         kh.setGioiTinh(gioiTinh);
+        kh.setSoDienThoai(sdt);
         boolean flag = khachHangDAO.suaKhachHang(Integer.parseInt(ma), kh);
-        if (flag) {
-            new MyDialog("Sửa thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Sửa thất bại!", MyDialog.ERROR_DIALOG);
-        }
         return flag;
     }
 
@@ -106,18 +98,35 @@ public class KhachHangBUS {
         boolean flag = false;
         try {
             int maKH = Integer.parseInt(ma);
-            MyDialog dlg = new MyDialog("Bạn có chắc chắn muốn xoá?", MyDialog.WARNING_DIALOG);
-            if(dlg.getAction() == MyDialog.CANCEL_OPTION)
-                return false;
             flag = khachHangDAO.xoaKhachHang(maKH);
         } catch (Exception e) {
-            new MyDialog("Chưa chọn khách hàng!", MyDialog.ERROR_DIALOG);
-        }
-        if (flag) {
-            new MyDialog("Xoá thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Xoá thất bại!", MyDialog.ERROR_DIALOG);
+           return false;
         }
         return flag;
     }
+    
+
+    public boolean xoaKhachHangVinhVien(String ma) {
+        boolean flag = false;
+        try {
+            int maKH = Integer.parseInt(ma);
+            flag = khachHangDAO.xoaKhachHangVinhVien(maKH);
+        } catch (Exception e) {
+           return false;
+        }
+        return flag;
+    }
+    
+
+    public boolean khoiPhucKhachHang(String ma) {
+        boolean flag = false;
+        try {
+            int maKH = Integer.parseInt(ma);
+            flag = khachHangDAO.khoiPhucKhachHang(maKH);
+        } catch (Exception e) {
+           return false;
+        }
+        return flag;
+    }
+    
 }

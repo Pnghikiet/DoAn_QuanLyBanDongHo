@@ -4,6 +4,7 @@ import DTO.PhanQuyen;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -51,7 +52,8 @@ public class PhanQuyenDAO {
         return null;
     }
 
-    public boolean suaQuyen(PhanQuyen phanQuyen) {
+    public boolean suaNhomQuyen(PhanQuyen phanQuyen) {
+        boolean flag = false;
         try {
             String sql = "UPDATE phanquyen SET NhapHang=?,QLSanPham=?,QLNhanVien=?,QLKhachHang=?,ThongKe=? WHERE Quyen=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
@@ -61,13 +63,14 @@ public class PhanQuyenDAO {
             pre.setInt(4, phanQuyen.getQlKhachHang());
             pre.setInt(5, phanQuyen.getThongKe());
             pre.setString(6, phanQuyen.getQuyen());
-            return pre.executeUpdate() > 0;
-        } catch (Exception e) {
+            flag = pre.executeUpdate() > 0;
+        } catch (SQLException e) {
+            return false;
         }
-        return false;
+        return flag;
     }
 
-    public boolean themQuyen(PhanQuyen phanQuyen) {
+    public boolean themNhomQuyen(PhanQuyen phanQuyen) {
         try {
             String sql = "INSERT INTO phanquyen VALUES (?,?,?,?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
@@ -83,7 +86,7 @@ public class PhanQuyenDAO {
         return false;
     }
 
-    public boolean xoaQuyen(String phanQuyen) {
+    public boolean xoaNhomQuyen(String phanQuyen) {
         try {
             String sql1 = "UPDATE TaiKhoan SET Quyen='Default' WHERE Quyen='" + phanQuyen + "'";
             Statement st1 = MyConnect.conn.createStatement();

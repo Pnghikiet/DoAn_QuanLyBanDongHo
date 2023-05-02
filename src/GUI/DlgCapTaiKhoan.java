@@ -6,6 +6,7 @@ import DTO.PhanQuyen;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class DlgCapTaiKhoan extends javax.swing.JDialog {
@@ -154,9 +155,15 @@ public class DlgCapTaiKhoan extends javax.swing.JDialog {
     private PhanQuyenBUS phanQuyenBUS = new PhanQuyenBUS();
 
     private void btnTaoTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoTaiKhoanActionPerformed
-        taiKhoanBUS.themTaiKhoan(txtMaNV.getText(),
-                txtTenDangNhap.getText(),
+       
+        boolean flag = taiKhoanBUS.themTaiKhoan(txtMaNV.getText().trim(),
+                txtTenDangNhap.getText().trim(),
                 (String) cmbQuyen.getSelectedItem());
+        if(flag) {
+            JOptionPane.showMessageDialog(rootPane, "Thêm tài khoản thành công");
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Thêm tài khoản thất bại");
+        }
     }//GEN-LAST:event_btnTaoTaiKhoanActionPerformed
 
     private void txtTenDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenDangNhapActionPerformed
@@ -165,8 +172,8 @@ public class DlgCapTaiKhoan extends javax.swing.JDialog {
 
     private void loadDataCmbQuyen() {
         cmbQuyen.removeAllItems();
-        phanQuyenBUS.docDanhSachQuyen();
-        ArrayList<PhanQuyen> dsq = phanQuyenBUS.getListQuyen();
+        phanQuyenBUS.docDanhSachNhomQuyen();
+        ArrayList<PhanQuyen> dsq = phanQuyenBUS.getListNhomQuyen();
         for (PhanQuyen pq : dsq) {
             cmbQuyen.addItem(pq.getQuyen());
         }
