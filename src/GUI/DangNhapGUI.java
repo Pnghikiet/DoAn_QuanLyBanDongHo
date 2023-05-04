@@ -205,9 +205,7 @@ public class DangNhapGUI extends JFrame{
             }
         });
     }
-    
-    public static void main(String[] args) {
-        new MyConnect();
-        new DangNhapGUI();
+    public void showWindow() {
+        this.setVisible(true);
     }
 }

@@ -451,10 +451,4 @@ public class ThongKeDAO {
         }
         return null;
     }
-    
-    public static void main(String[] args) {
-        new MyConnect();
-        ThongKeDAO tkDAO = new ThongKeDAO();
-        System.out.println(tkDAO.getDanhSachDTKHTheoThang(6,2023));
-    }
 }

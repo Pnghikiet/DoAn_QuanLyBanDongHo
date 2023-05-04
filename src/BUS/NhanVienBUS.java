@@ -65,7 +65,7 @@ public class NhanVienBUS {
                 taiKhoan = "Chưa có";
             }
             
-            if (nv.getHo().toLowerCase().contains(tuKhoa) || nv.getTen().toLowerCase().contains(tuKhoa) ||
+            if ((nv.getMaNV()+"").contains(tuKhoa) || nv.getHo().toLowerCase().contains(tuKhoa) || nv.getTen().toLowerCase().contains(tuKhoa) ||
                     nv.getGioiTinh().toLowerCase().contains(tuKhoa) || nv.getChucVu().toLowerCase().contains(tuKhoa) || taiKhoan.toLowerCase().contains(tuKhoa)) {
                 dsnv.add(nv);
             }

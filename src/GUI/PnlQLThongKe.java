@@ -6,7 +6,6 @@ import BUS.HoaDonBUS;
 import BUS.KhachHangBUS;
 import BUS.NhanVienBUS;
 import BUS.ThongKeBUS;
-import DAO.MyConnect;
 import DTO.DoanhThuKhachHang;
 import DTO.DoanhThuNhanVien;
 import DTO.GiamGia;
@@ -1082,7 +1081,9 @@ public class PnlQLThongKe extends JPanel{
         String selected = cmbNam.getSelectedItem()+"";
         try {
             int nam = Integer.parseInt(selected);
-            
+            lblSLSP.setText(thongKeBUS.getSoLuongSP()+"");
+            lblSLNV.setText(thongKeBUS.getSoLuongNhanVien()+"");
+            lblSLKH.setText(thongKeBUS.getSoLuongKhachHang()+"");
             lblTDT.setText(thongKeBUS.tinhDoanhThuTheoNam(nam)+"");
             
             modelDTQuy.setRowCount(0);

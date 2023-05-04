@@ -107,8 +107,10 @@ public class GiamGiaBUS {
 
     public ArrayList<GiamGia> timKiemGiamGia(String tuKhoa) {
         tuKhoa = tuKhoa.toLowerCase();
+        tuKhoa = tuKhoa.replace(",", "");
         ArrayList<GiamGia> dsgg = new ArrayList<>();
         for (GiamGia gg : listGiamGia) {
+            String ma = gg.getMaGG()+"";
             String ten = gg.getTenGG().toLowerCase();
             String phanTram = gg.getPhanTramGiam() + "";
             String dieuKien = gg.getDieuKien() + "";
@@ -120,7 +122,7 @@ public class GiamGiaBUS {
                 trangThai = "Không hiệu lực";
             }
             
-            if (ten.contains(tuKhoa) || phanTram.contains(tuKhoa) || dieuKien.contains(tuKhoa) || trangThai.contains(tuKhoa)) {
+            if (ma.contains(tuKhoa) || ten.contains(tuKhoa) || phanTram.contains(tuKhoa) || dieuKien.contains(tuKhoa) || trangThai.contains(tuKhoa)) {
                 dsgg.add(gg);
             }
         }

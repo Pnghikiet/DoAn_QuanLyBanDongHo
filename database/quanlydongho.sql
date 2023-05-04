@@ -1,11 +1,17 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
+<<<<<<< HEAD
 -- Thời gian đã tạo: Th5 02, 2023 lúc 05:24 PM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 8.1.10
+=======
+-- Thời gian đã tạo: Th5 02, 2023 lúc 12:52 PM
+-- Phiên bản máy phục vụ: 10.4.17-MariaDB
+-- Phiên bản PHP: 7.3.27
+>>>>>>> d50d17dda52c66aecc9d6804daf994363a4b21dd
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -149,6 +155,7 @@ CREATE TABLE `hoadon` (
 --
 
 INSERT INTO `hoadon` (`MaHD`, `MaNV`, `MaKH`, `NgayLap`, `TongTien`, `MaGG`, `GhiChu`) VALUES
+<<<<<<< HEAD
 (1, 1, 1, '2021-02-28', 1607000, 1, 'Đã thanh toán'),
 (2, 26, 1, '2021-01-31', 21794000, 1, 'Đã thanh toán'),
 (3, 26, 1, '2023-06-12', 13399800, 1, 'Đã thanh toán'),
@@ -159,6 +166,9 @@ INSERT INTO `hoadon` (`MaHD`, `MaNV`, `MaKH`, `NgayLap`, `TongTien`, `MaGG`, `Gh
 (8, 26, 1, '2023-12-15', 9897800, 1, 'Đã thanh toán'),
 (9, 26, 1, '2023-03-18', 6899500, 1, 'Đã thanh toán'),
 (10, 26, 1, '2023-06-01', 7999200, 1, 'Đã thanh toán');
+=======
+(1, 1, 1, '2023-02-28', 1607000, 1, 'Đã thanh toán');
+>>>>>>> d50d17dda52c66aecc9d6804daf994363a4b21dd
 
 -- --------------------------------------------------------
 
@@ -182,7 +192,11 @@ CREATE TABLE `khachhang` (
 --
 
 INSERT INTO `khachhang` (`MaKH`, `Ho`, `Ten`, `GioiTinh`, `SoDienThoai`, `TongChiTieu`, `TinhTrang`) VALUES
+<<<<<<< HEAD
 (1, 'Tôn Thành', 'Tâm', 'Nam', '0396265413', 112175500, 1),
+=======
+(1, 'Tôn Thành', 'Tâm', 'Nam', '0396265413', 0, 1),
+>>>>>>> d50d17dda52c66aecc9d6804daf994363a4b21dd
 (2, 'Nguyễn Thị Thùy', 'Linh', 'Nữ', '0396371021', 0, 1),
 (3, 'Phan Mạnh', 'Quỳnh', 'Nam', '0396775066', 0, 1),
 (4, 'Tôn Thọ', 'Hưng', 'Nam', '0396356659', 0, 1);

@@ -14,7 +14,7 @@ public class HoaDon {
     public HoaDon() {
     }
 
-    public HoaDon(int maHD, int maKH, int maNV, Date ngayLap, int tongTien,int maGG, String ghiChu) {
+    public HoaDon(int maHD, int maKH, int maNV, Date ngayLap, int tongTien, int maGG, String ghiChu) {
         this.maHD = maHD;
         this.maKH = maKH;
         this.maNV = maNV;
@@ -52,6 +52,14 @@ public class HoaDon {
         return ngayLap;
     }
 
+    public int getMaGG() {
+        return maGG;
+    }
+
+    public void setMaGG(int maGG) {
+        this.maGG = maGG;
+    }
+
     public void setNgayLap(Date ngayLap) {
         this.ngayLap = ngayLap;
     }
@@ -70,13 +78,5 @@ public class HoaDon {
 
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
-    }
-
-    public int getMaGG() {
-        return maGG;
-    }
-
-    public void setMaGG(int maGG) {
-        this.maGG = maGG;
     }
 }

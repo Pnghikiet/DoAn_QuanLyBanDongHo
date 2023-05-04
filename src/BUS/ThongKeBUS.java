@@ -15,7 +15,6 @@ import DTO.GiamGia;
 import java.text.SimpleDateFormat;
 
 import BUS.GiamGiaBUS;
-import DAO.MyConnect;
 import DTO.KhachHang;
 import DTO.NhanVien;
 
@@ -212,12 +211,4 @@ public class ThongKeBUS {
         }
             return hoTen;
         }
-   
-    
-    public static void main(String[] args) {
-        new MyConnect();
-        ThongKeBUS tkBUS = new ThongKeBUS();
-        System.out.println(tkBUS.tinhDoanhThuQuy(2022));
-    }
-    
 }

@@ -58,7 +58,7 @@ public final class PnlQLGiamGia extends JPanel{
         
         JPanel pnlGiamGia = new JPanel(new GridBagLayout());
         
-        lblTitleGiamGia = new JLabel("QUẢN LÝ GIẢM GIÁ");
+        lblTitleGiamGia = new JLabel("QUẢN LÝ GIẢM GIÁ KHUYẾN MÃI");
         lblTitleGiamGia.setFont(font);
         
         lblMaGG = new JLabel("Mã giảm giá");

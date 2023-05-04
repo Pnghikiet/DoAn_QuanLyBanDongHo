@@ -1365,6 +1365,8 @@ public final class PnlQuanLyKhachHang extends JPanel{
             try {
                 minChiTieu = minChiTieu.replace(",", "");
                 maxChiTieu = maxChiTieu.replace(",", "");
+                
+                
                 int min = Integer.parseInt(minChiTieu);
                 int max = Integer.parseInt(maxChiTieu);
 

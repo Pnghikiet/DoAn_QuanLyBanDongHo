@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.event.AncestorListener;
 
 public class MainQuanLyGUI extends JFrame {
 
@@ -26,19 +25,20 @@ public class MainQuanLyGUI extends JFrame {
         this.setVisible(true);
     }
 
-    JLabel btnDoiMatKhau;
+    JButton btnDoiMatKhau;
+    JButton btnDangXuat;
     JPanel pnTitle, pnMenuLeft, pnCard, pnBanHang, pnKhuyenMai, pnNhapHang, pnSanPham, pnNhanVien, pnKhachHang, pnThongKe, pnBanHangChoose, pnKhuyenMaiChoose, pnNhapHangChoose, pnSanPhamChoose, pnNhanVienChoose, pnKhachHangChoose, pnThongKeChoose;
-//    PnQuanLyBanHangGUI banHangPanel;
+    PnQuanLyBanHangGUI banHangPanel;
     PnlQLGiamGia khuyenMaiPanel;
-//    PnQuanLyNhapHangGUI nhapHangPanel;
-//    PnQuanLySanPhamGUI sanPhamPanel;
+    PnQuanLyNhapHangGUI nhapHangPanel;
+    PnQuanLySanPhamGUI sanPhamPanel;
     PnlQuanLyNhanVien nhanVienPanel;
     PnlQuanLyKhachHang khachHangPanel;
     PnlQLThongKe thongKePanel;
     
     DangNhapBUS dnBUS = new DangNhapBUS();
     PhanQuyenBUS pqBUS = new PhanQuyenBUS();
-
+    
     JLabel btnClose, btnMinimize, lblBanHang, lblKhuyenMai, lblNhapHang, lblSanPham, lblNhanVien, lblKhachHang, lblThongKe;
     final Color clLeftItem = new Color(63, 74, 89);
     final Color clLeftItemHover = new Color(72, 88, 107);
@@ -64,12 +64,16 @@ public class MainQuanLyGUI extends JFrame {
         pnTitle = new JPanel(null);
         pnTitle.setPreferredSize(new Dimension(width, 46));
 
-        btnDoiMatKhau = new JLabel("Đổi mật khẩu");
-        btnDoiMatKhau.setToolTipText("Đổi mật khẩu");
-        btnDoiMatKhau.setBounds(0, 0, 70, 70);
+        btnDoiMatKhau = new JButton("Đổi mật khẩu");
+        btnDoiMatKhau.setBounds(0, 0, 140, 46);
         btnDoiMatKhau.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pnTitle.add(btnDoiMatKhau);
-
+        
+        btnDangXuat = new JButton("Đăng xuất");
+        btnDangXuat.setBounds(150, 0, 100, 46);
+        btnDangXuat.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        pnTitle.add(btnDangXuat);
+        
         pnMain.add(pnTitle, BorderLayout.NORTH);
         /*
         ============================================================
@@ -90,8 +94,9 @@ public class MainQuanLyGUI extends JFrame {
         pnNhapHangChoose = new JPanel(new BorderLayout());
         
         
-        JLabel lblAvatar = new JLabel("Quản lý bán đồng hồ");
+        JLabel lblAvatar = new JLabel(new ImageIcon("images/ManagerUI/logo.jpg"), JLabel.CENTER);
         lblAvatar.setPreferredSize(new Dimension(250, 140));
+        lblAvatar.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         pnMenuLeft.add(lblAvatar);
 
         lblBanHang = new JLabel("Quản lý bán hàng");
@@ -154,7 +159,7 @@ public class MainQuanLyGUI extends JFrame {
         for (JPanel pnl : listMenuLeft) {
             pnl.setBorder(BorderFactory.createLineBorder(Color.white));
             pnl.setVisible(false);
-//            pnl.setOpaque(true);
+            pnl.setOpaque(true);
             pnl.setBackground(clLeftItem);
             pnl.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             pnMenuLeft.add(pnl);
@@ -189,12 +194,13 @@ public class MainQuanLyGUI extends JFrame {
         pnCard.add(pnThongKe, "7");
         
         //==========ADD PANEL BÁN HÀNG (Ko phân quyền)==========
-//        banHangPanel = new PnQuanLyBanHangGUI();
-//        pnBanHang.setLayout(new BorderLayout());
-//        pnBanHang.add(banHangPanel, BorderLayout.CENTER);
+        banHangPanel = new PnQuanLyBanHangGUI();
+        pnBanHang.setLayout(new BorderLayout());
+        pnBanHang.add(banHangPanel, BorderLayout.CENTER);
+        pnBanHangChoose.setVisible(true);
+        pnBanHangChoose.setBackground(clLeftItemSelected);
 
         //======XỬ LÝ PHÂN QUYỀN=======
-        System.out.println(dnBUS.taiKhoanLogin.getTaiKhoan());
         PhanQuyen quyen = pqBUS.getNhomQuyen(dnBUS.taiKhoanLogin.getQuyen());
 
 
@@ -204,13 +210,13 @@ public class MainQuanLyGUI extends JFrame {
             pnKhuyenMai.add(khuyenMaiPanel, BorderLayout.CENTER);
             pnKhuyenMaiChoose.setVisible(true);
         }
-//
-//        if (quyen.getQlSanPham() == 1) {
-//            sanPhamPanel = new PnQuanLySanPhamGUI();
-//            pnSanPham.setLayout(new BorderLayout());
-//            pnSanPham.add(sanPhamPanel, BorderLayout.CENTER);
-//            lblSanPham.setVisible(true);
-//        }
+
+        if (quyen.getQlSanPham() == 1) {
+            sanPhamPanel = new PnQuanLySanPhamGUI();
+            pnSanPham.setLayout(new BorderLayout());
+            pnSanPham.add(sanPhamPanel, BorderLayout.CENTER);
+            pnSanPhamChoose.setVisible(true);
+        }
 
         if (quyen.getQlNhanVien() == 1) {
             nhanVienPanel = new PnlQuanLyNhanVien();
@@ -225,13 +231,13 @@ public class MainQuanLyGUI extends JFrame {
             pnKhachHang.add(khachHangPanel, BorderLayout.CENTER);
             pnKhachHangChoose.setVisible(true);
         }
-//
-//        if (quyen.getNhapHang()== 1) {
-//            nhapHangPanel = new PnlQuanLyNhapHang();
-//            pnNhapHang.setLayout(new BorderLayout());
-//            pnNhapHang.add(khachHangPanel, BorderLayout.CENTER);
-//            lblNhapHang.setVisible(true);
-//        }
+
+        if (quyen.getNhapHang()== 1) {
+            nhapHangPanel = new PnQuanLyNhapHangGUI();
+            pnNhapHang.setLayout(new BorderLayout());
+            pnNhapHang.add(nhapHangPanel, BorderLayout.CENTER);
+            pnNhapHangChoose.setVisible(true);
+        }
 
         if (quyen.getThongKe() == 1) {
             thongKePanel = new PnlQLThongKe();
@@ -265,33 +271,22 @@ public class MainQuanLyGUI extends JFrame {
             }
         });
 
-        btnDoiMatKhau.addMouseListener(new MouseListener() {
+        btnDoiMatKhau.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 new DlgDoiMatKhau().setVisible(true);
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                btnDoiMatKhau.setOpaque(true);
-                btnDoiMatKhau.setBackground(clLeftItemHover);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                btnDoiMatKhau.setOpaque(false);
-                btnDoiMatKhau.setBackground(new Color(0, 0, 0, 0));
             }
         });
 
+        btnDangXuat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                DangNhapGUI dnGUI = new DangNhapGUI();
+                dnGUI.showWindow();
+            }
+        });
+        
 
         for (JPanel pnl : listMenuLeft) {
             pnl.addMouseListener(new MouseListener() {
@@ -319,7 +314,6 @@ public class MainQuanLyGUI extends JFrame {
                     } else {
                         cardName = "7";
                     }
-                    System.out.println(cardName);
                     cardMenuLeftGroup.show(pnCard, cardName);
                 }
 
@@ -346,40 +340,6 @@ public class MainQuanLyGUI extends JFrame {
                 }
             });
         }
-        
-//        pnThongKeChoose.addMouseListener(new MouseListener() {
-//            @Override
-//            public void mouseClicked(MouseEvent e) {
-//                 for (JPanel pnlDisable : listMenuLeft) {
-//                        pnlDisable.setBackground(clLeftItem);
-//                    }
-//                pnThongKeChoose.setBackground(clLeftItemSelected);
-//                cardMenuLeftGroup.show(pnCard, "7");
-//            }
-//
-//            @Override
-//            public void mousePressed(MouseEvent e) {
-//            }
-//
-//            @Override
-//            public void mouseReleased(MouseEvent e) {
-//            }
-//
-//            @Override
-//            public void mouseEntered(MouseEvent e) {
-//                if (pnThongKeChoose.getBackground().equals(clLeftItem)) {
-//                        pnThongKeChoose.setBackground(clLeftItemHover);
-//                    }
-//            }
-//
-//            @Override
-//            public void mouseExited(MouseEvent e) {
-//                if (pnThongKeChoose.getBackground().equals(clLeftItemHover)) {
-//                        pnThongKeChoose.setBackground(clLeftItem);
-//                    }
-//            }
-//        });
-
     }
 
     private void moverFrame(int x, int y) {

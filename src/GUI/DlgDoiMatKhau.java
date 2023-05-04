@@ -1,6 +1,8 @@
 package GUI;
 
+import BUS.DangNhapBUS;
 import BUS.TaiKhoanBUS;
+import javax.swing.JOptionPane;
 
 public class DlgDoiMatKhau extends javax.swing.JDialog {
 
@@ -142,9 +144,35 @@ public class DlgDoiMatKhau extends javax.swing.JDialog {
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         TaiKhoanBUS tkBUS = new TaiKhoanBUS();
-        boolean flag = tkBUS.doiMatKhau(txtMatKhauCu.getText(), txtMatKhauMoi.getText(), txtNhapLaiMatKhau.getText());
-        if (flag) {
-            btnHuy.doClick();
+        DangNhapBUS dnBUS = new DangNhapBUS();
+        String mkCu = txtMatKhauCu.getText();
+        String mkMoi = txtMatKhauMoi.getText();
+        String mkNhapLai = txtNhapLaiMatKhau.getText();
+        String mk = dnBUS.taiKhoanLogin.getMatKhau();
+        
+        if(mkCu.trim().equals("")){
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống mật khẩu củ");
+            txtMatKhauCu.requestFocus();
+        } else if(!mk.equals(mkCu)) {
+            JOptionPane.showMessageDialog(rootPane, "Mật khẩu củ không đúng");
+            txtMatKhauCu.requestFocus();
+        } else if(mkMoi.trim().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống mật khẩu mới");
+            txtMatKhauMoi.requestFocus();
+        } else if(mkNhapLai.trim().equals("")) {
+            JOptionPane.showMessageDialog(rootPane, "Không được để trống nhập lại mật khẩu");
+            txtNhapLaiMatKhau.requestFocus();
+        } else if(!mkMoi.equals(mkNhapLai)) {
+            JOptionPane.showMessageDialog(rootPane, "Mật khẩu nhập lại không trùng khớp");
+        } else {
+            boolean flag = tkBUS.doiMatKhau(mkCu, mkMoi , mkNhapLai);
+            if (flag) {
+                JOptionPane.showMessageDialog(rootPane, "Đổi mật khẩu thành công");
+                dnBUS.taiKhoanLogin.setMatKhau(mkMoi);
+                btnHuy.doClick();
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Đổi mật khẩu thất bại");
+            }
         }
     }//GEN-LAST:event_btnXacNhanActionPerformed
 

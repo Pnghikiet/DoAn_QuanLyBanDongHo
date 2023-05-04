@@ -3,6 +3,7 @@ package BUS;
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCap;
 import Customs.MyDialog;
+import DAO.MyConnect;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,6 +28,32 @@ public class NhaCungCapBUS {
         return this.listNhaCungCap;
     }
 
+    public String gettennhacungcap(int ma)
+    {
+        for(NhaCungCap i : listNhaCungCap)
+        {
+            if(i.getMaNCC()==ma)
+                return i.getTenNCC();
+        }
+        return "";
+    }
+    
+    public boolean xoaNhaCungCap(String ma)
+    {
+        if (ma.trim().equals("")) {
+            new MyDialog("Chưa chọn nhà cung cấp để xoá!", MyDialog.SUCCESS_DIALOG);
+            return false;
+        }
+        int maNcc = Integer.parseInt(ma);
+        if (nhaCungCapDAO.deleteNCC(maNcc)) {
+            new MyDialog("Xoá thành công!", MyDialog.SUCCESS_DIALOG);
+            return true;
+        } else {
+            new MyDialog("Xoá thất bại! Loại có sản phẩm con", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+    }
+    
     public boolean themNhaCungCap(String tenNCC, String diaChi, String dienThoai) {
         if (tenNCC.trim().equals("")) {
             new MyDialog("Hãy nhập tên Nhà cung cấp này!", MyDialog.ERROR_DIALOG);
@@ -87,5 +114,4 @@ public class NhaCungCapBUS {
         }
         return flag;
     }
-
 }

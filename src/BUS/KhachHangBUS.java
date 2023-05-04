@@ -44,11 +44,12 @@ public class KhachHangBUS {
         tuKhoa = tuKhoa.toLowerCase();
         ArrayList<KhachHang> dskh = new ArrayList<>();
         for (KhachHang kh : listKhachHang) {
+            String ma = kh.getMaKH()+"";
             String ho = kh.getHo().toLowerCase();
             String ten = kh.getTen().toLowerCase();
             String gioiTinh = kh.getGioiTinh().toLowerCase();
             String sdt = kh.getSoDienThoai();
-            if (ho.contains(tuKhoa) || ten.contains(tuKhoa) || gioiTinh.contains(tuKhoa) || sdt.contains(tuKhoa)) {
+            if (ho.contains(tuKhoa) || ten.contains(tuKhoa) || gioiTinh.contains(tuKhoa) || sdt.contains(tuKhoa) || ma.contains(tuKhoa)) {
                 dskh.add(kh);
             }
         }

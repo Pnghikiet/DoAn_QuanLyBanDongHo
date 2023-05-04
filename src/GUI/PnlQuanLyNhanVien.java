@@ -4,7 +4,6 @@ package GUI;
 import BUS.NhanVienBUS;
 import BUS.PhanQuyenBUS;
 import BUS.TaiKhoanBUS;
-import DAO.MyConnect;
 import DTO.NhanVien;
 import DTO.PhanQuyen;
 import javax.swing.*;
@@ -1249,6 +1248,7 @@ public final class PnlQuanLyNhanVien extends JPanel{
                 phanQuyen.setQlNhanVien(pq.getQlNhanVien());
                 phanQuyen.setQlKhachHang(pq.getQlKhachHang());
                 phanQuyen.setThongKe(pq.getThongKe());
+                phanQuyen.setQlKhuyenMai(pq.getQlKhuyenMai());
                 break;
             }
         }
@@ -1273,7 +1273,7 @@ public final class PnlQuanLyNhanVien extends JPanel{
         if (phanQuyen.getThongKe() == 1) {
             ckbThongKe.setSelected(true);
         }
-        if (phanQuyen.getQlKhuyenMai()== 1) {
+        if (phanQuyen.getQlKhuyenMai() == 1) {
             ckbKhuyenMai.setSelected(true);
         }
     }
