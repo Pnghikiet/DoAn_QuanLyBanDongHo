@@ -114,7 +114,20 @@ public class TaiKhoanDAO {
         }
         return false;
     }
-
+    
+    public boolean xoaVinhVienTaiKhoan(int maNV) {
+        boolean flag = false;
+        try {
+            String sql = "DELETE FROM TaiKhoan WHERE MaNV=?";
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            pre.setInt(1, maNV);
+            flag = pre.executeUpdate() > 0;
+        } catch (SQLException e) {
+            return false;
+        }
+        return flag;
+    }
+    
     public boolean doiMatKhau(String matKhauCu, String matKhauMoi) {
         try {
             String sql = "UPDATE TaiKhoan SET MatKhau=? WHERE MaNV=? AND MatKhau=?";
@@ -139,5 +152,43 @@ public class TaiKhoanDAO {
         } catch (Exception e) {
         }
         return -1;
+    }
+    
+        
+    public boolean kiemTraTaiKhoan(String taikhoan) {
+        boolean flag = false;
+        try {
+            String sql = "SELECT * FROM TaiKhoan WHERE TaiKhoan=?";
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            pre.setString(1, taikhoan);
+            ResultSet rs = pre.executeQuery();
+            if(rs.next()){
+                flag = true;
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+        return flag;
+    }
+    
+    public TaiKhoan getTaiKhoang(String tk, String mk) {
+        try {
+            String sql = "SELECT * FROM TaiKhoan WHERE TaiKhoan = ? AND MatKhau = ?";
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            pre.setString(1, tk);
+            pre.setString(2, mk);
+            
+            ResultSet rs = pre.executeQuery();
+            TaiKhoan taikhoan = new TaiKhoan();
+            if(rs.next()) {
+                taikhoan.setMaNV(rs.getInt(1));
+                taikhoan.setTaiKhoan(rs.getString(2));
+                taikhoan.setMatKhau(rs.getString(3));
+                taikhoan.setQuyen(rs.getString(4));
+            }
+            return taikhoan;
+        } catch (Exception e) {
+        }
+        return null;
     }
 }

@@ -38,9 +38,9 @@ public class NhanVienDAO {
         try {
             String sql = "SELECT * FROM nhanvien WHERE MaNV=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            pre.setInt(0, maNV);
+            pre.setInt(1, maNV);
             ResultSet rs = pre.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 nv = new NhanVien();
                 nv.setMaNV(rs.getInt(1));
                 nv.setHo(rs.getString(2));

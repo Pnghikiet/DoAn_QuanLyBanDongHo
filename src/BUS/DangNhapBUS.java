@@ -4,20 +4,15 @@ import DAO.DangNhapDAO;
 import DTO.PhanQuyen;
 import DTO.TaiKhoan;
 import Customs.MyDialog;
+import DAO.TaiKhoanDAO;
 
 import java.io.*;
 
 public class DangNhapBUS {
-
-    private final static int EMPTY_ERROR = 1;
-    private final static int WRONG_ERROR = 2;
     public static TaiKhoan taiKhoanLogin = null;
-
+    public TaiKhoanDAO tkDAO = new TaiKhoanDAO();
+    
     public TaiKhoan getTaiKhoanDangNhap(String user, String password, boolean selected) {
-        if (kiemTraDangNhap(user, password) == EMPTY_ERROR) {
-            new MyDialog("Không được để trống thông tin!", MyDialog.ERROR_DIALOG);
-            return null;
-        }
         TaiKhoan tk = new TaiKhoan();
         tk.setTaiKhoan(user);
         tk.setMatKhau(password);
@@ -25,16 +20,6 @@ public class DangNhapBUS {
         DangNhapDAO dangNhapDAO = new DangNhapDAO();
         TaiKhoan account = dangNhapDAO.dangNhap(tk);
         taiKhoanLogin = account;
-
-        if (account == null) {
-            new MyDialog("Sai thông tin đăng nhập hoặc tài khoản đã bị khoá!", MyDialog.ERROR_DIALOG);
-        } else {
-            PhanQuyenBUS phanQuyenBUS = new PhanQuyenBUS();
-//            phanQuyenBUS.kiemTraQuyen(account.getQuyen());
-            xuLyGhiNhoDangNhap(user, password, selected);
-            new MyDialog("Đăng nhập thành công!", MyDialog.SUCCESS_DIALOG);
-//            new MyDialog("Vì tình hình dịch Covid phức tạp, cửa hàng chỉ thực hiện bán mang về!", MyDialog.INFO_DIALOG);
-        }
         return account;
     }
 
@@ -50,23 +35,10 @@ public class DangNhapBUS {
         return "";
     }
 
-    private void xuLyGhiNhoDangNhap(String user, String password, boolean selected) {
-        try {
-            if (!selected) {
-                user = "";
-                password = "";
-            }
-            FileWriter fw = new FileWriter("remember.dat");
-            fw.write(user + " | " + password);
-            fw.close();
-        } catch (Exception e) {
-        }
-    }
-
-    private int kiemTraDangNhap(String user, String password) {
+    public boolean kiemTraDangNhap(String user, String password) {
         user = user.replaceAll("\\s+", "");
         password = password.replaceAll("\\s+", "");
-        int result = 0;
+        boolean result = false;
 
         TaiKhoan tk = new TaiKhoan();
         tk.setTaiKhoan(user);
@@ -75,12 +47,22 @@ public class DangNhapBUS {
         DangNhapDAO dangNhapDAO = new DangNhapDAO();
         TaiKhoan account = dangNhapDAO.dangNhap(tk);
 
-        if (user.length() <= 0 || password.length() <= 0) {
-            result = EMPTY_ERROR;
-        } else if (account == null) {
-            result = WRONG_ERROR;
+       if (account != null) {
+            result =  true;
         }
         return result;
     }
 
+        
+    public TaiKhoan getTaiKhoan(String taikhoan, String matkhau) {
+        return tkDAO.getTaiKhoang(taikhoan, matkhau);
+    }
+    
+    public boolean kiemTraTaiKhoan(String taikhoan) {
+        return tkDAO.kiemTraTaiKhoan(taikhoan);
+    }
+    
+    public boolean kiemTraKhoanTrang(String taikhoan) {
+        return taikhoan.contains(" ");
+    }
 }

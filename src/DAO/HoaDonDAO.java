@@ -19,7 +19,8 @@ public class HoaDonDAO {
                 hd.setMaKH(rs.getInt(3));
                 hd.setNgayLap(rs.getDate(4));
                 hd.setTongTien(rs.getInt(5));
-                hd.setGhiChu(rs.getString(6));
+                hd.setMaGG(rs.getInt(6));
+                hd.setGhiChu(rs.getString(7));
                 dshd.add(hd);
             }
         } catch (SQLException ex) {
@@ -34,13 +35,14 @@ public class HoaDonDAO {
             String sql1 = "UPDATE KhachHang SET TongChiTieu=TongChiTieu+" + hd.getTongTien() + " WHERE MaKH=" + hd.getMaKH();
             Statement st = MyConnect.conn.createStatement();
             st.executeUpdate(sql1);
-            String sql = "INSERT INTO hoadon(MaNV, MaKH, NgayLap, TongTien, GhiChu) VALUES(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO hoadon(MaNV, MaKH, NgayLap, TongTien, MaGG, GhiChu) VALUES(?, ?, ?, ?, ?,?)";
             PreparedStatement prep = MyConnect.conn.prepareStatement(sql);
             prep.setInt(1, hd.getMaNV());
             prep.setInt(2, hd.getMaKH());
             prep.setTimestamp(3, new java.sql.Timestamp(new java.util.Date().getTime()));
             prep.setInt(4, hd.getTongTien());
-            prep.setString(5, hd.getGhiChu());
+            prep.setInt(5, hd.getMaGG());
+            prep.setString(6, hd.getGhiChu());
             result = prep.executeUpdate() > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -79,12 +81,34 @@ public class HoaDonDAO {
                 hd.setMaKH(rs.getInt(3));
                 hd.setNgayLap(rs.getDate(4));
                 hd.setTongTien(rs.getInt(5));
-                hd.setGhiChu(rs.getString(6));
+                hd.setMaGG(rs.getInt(6));
+                hd.setGhiChu(rs.getString(7));
                 dshd.add(hd);
             }
             return dshd;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public HoaDon getHoaDon(int ma) {
+        try {
+            String sql = "SELECT * FROM hoadon WHERE MaHD = ?";
+            PreparedStatement prep = MyConnect.conn.prepareStatement(sql);
+            prep.setInt(1, ma);
+            ResultSet rs = prep.executeQuery();
+            HoaDon hd = new HoaDon();
+            if(rs.next()) {
+                hd.setMaHD(rs.getInt(1));
+                hd.setMaNV(rs.getInt(2));
+                hd.setMaKH(rs.getInt(3));
+                hd.setNgayLap(rs.getDate(4));
+                hd.setTongTien(rs.getInt(5));
+                hd.setMaGG(rs.getInt(6));
+            }
+            return hd;
+        } catch (SQLException e) {
         }
         return null;
     }

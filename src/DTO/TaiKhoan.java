@@ -46,6 +46,5 @@ public class TaiKhoan {
 
     public void setQuyen(String Quyen) {
         this.Quyen = Quyen;
-    }
-    
+    }  
 }

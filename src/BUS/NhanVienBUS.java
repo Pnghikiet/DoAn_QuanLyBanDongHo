@@ -1,6 +1,7 @@
 package BUS;
 
 import DAO.NhanVienDAO;
+import DAO.TaiKhoanDAO;
 import DTO.NhanVien;
 
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 public class NhanVienBUS {
 
     private NhanVienDAO nvDAO = new NhanVienDAO();
+    private TaiKhoanDAO tkDAO = new TaiKhoanDAO();
+    
     private TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
     private ArrayList<NhanVien> listNhanVien = null;
 
@@ -71,9 +74,15 @@ public class NhanVienBUS {
     }
 
     public boolean xoaNhanVien(String ma) {
+        boolean flagNV = false;
         int maNV = Integer.parseInt(ma);
-        boolean flag = nvDAO.xoaNhanVien(maNV);
-        return flag;
+        boolean flagTK = tkDAO.xoaVinhVienTaiKhoan(maNV);
+        if(flagTK) {
+            flagNV= nvDAO.xoaNhanVien(maNV);
+        } else {
+            flagNV= nvDAO.xoaNhanVien(maNV);
+        }
+        return flagNV;
     }
 
     public boolean nhapExcel(String ho, String ten, String gioiTinh, String ChucVu) {
@@ -86,17 +95,17 @@ public class NhanVienBUS {
         return flag;
     }
     
-    
     public boolean kiemTraTrungNhanVien(String ho, String ten, String gioitinh, String cv) {
         gioitinh = gioitinh.toLowerCase();
         ho = ho.toLowerCase();
         ten = ten.toLowerCase();
         cv = cv.toLowerCase();
+        
         for (NhanVien NV : listNhanVien) {
             String hoNV = NV.getHo().toLowerCase();
             String tenNV = NV.getTen().toLowerCase();
             String gioitinhNV = NV.getGioiTinh().toLowerCase();
-            String cvNV = NV.getChucVu();
+            String cvNV = NV.getChucVu().toLowerCase();
             
             if(hoNV.equals(ho) && tenNV.equals(ten) && gioitinhNV.equals(gioitinh) && cvNV.equals(cv)) {
                 return true;
@@ -105,4 +114,8 @@ public class NhanVienBUS {
         return false;
     }
 
+    public NhanVien getNhanVien(int MaNV) {
+        return nvDAO.getNhanVien(MaNV);
+    }
+    
 }

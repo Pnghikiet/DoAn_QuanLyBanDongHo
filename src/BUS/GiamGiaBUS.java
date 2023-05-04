@@ -2,10 +2,10 @@ package BUS;
 
 import DAO.GiamGiaDAO;
 import DTO.GiamGia;
-import Customs.MyDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
+
 
 public class GiamGiaBUS {
 
@@ -30,14 +30,6 @@ public class GiamGiaBUS {
         ten = ten.trim();
         phanTram = phanTram.replace("%", "");
         dieuKien = dieuKien.replace(",", "");
-        if (ten.equals("")) {
-            new MyDialog("Hãy nhập tên chương trình khuyến mãi!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (ngayBD.compareTo(ngayKT) > 0 || ngayBD.compareTo(ngayKT) == 0) {
-            new MyDialog("Ngày kết thúc không hợp lệ!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
         boolean flag = false;
         try {
             int phanTramGiam = Integer.parseInt(phanTram);
@@ -52,13 +44,7 @@ public class GiamGiaBUS {
 
             flag = giamGiaDAO.themMaGiam(gg);
         } catch (Exception e) {
-            new MyDialog("Hãy nhập số nguyên hợp lệ!", MyDialog.ERROR_DIALOG);
             return false;
-        }
-        if (flag) {
-            new MyDialog("Thêm mới thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Thêm mới thất bại!", MyDialog.ERROR_DIALOG);
         }
         return flag;
     }
@@ -67,18 +53,6 @@ public class GiamGiaBUS {
         ten = ten.trim();
         phanTram = phanTram.replace("%", "");
         dieuKien = dieuKien.replace(",", "");
-        if (ma.equals("")) {
-            new MyDialog("Chưa chọn mã để sửa!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (ten.equals("")) {
-            new MyDialog("Hãy nhập tên chương trình khuyến mãi!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (ngayBD.compareTo(ngayKT) > 0 || ngayBD.compareTo(ngayKT) == 0) {
-            new MyDialog("Ngày kết thúc không hợp lệ!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
         boolean flag = false;
         try {
             int maGiam = Integer.parseInt(ma);
@@ -94,15 +68,91 @@ public class GiamGiaBUS {
             gg.setNgayKT(ngayKT);
 
             flag = giamGiaDAO.suaMaGiam(gg);
-        } catch (Exception e) {
-            new MyDialog("Hãy nhập số nguyên hợp lệ!", MyDialog.ERROR_DIALOG);
+        } catch (NumberFormatException e) {
             return false;
         }
-        if (flag) {
-            new MyDialog("Sửa thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Sửa thất bại!", MyDialog.ERROR_DIALOG);
+                return flag;
+    }
+    
+
+    public boolean xoaMaGiam(String ma) {
+        boolean flag = false;
+        try {
+            int maGiam = Integer.parseInt(ma);
+
+            flag = giamGiaDAO.xoaMaGiam(maGiam);
+        } catch (NumberFormatException e) {
+            return false;
         }
         return flag;
     }
+    
+    public ArrayList<GiamGia> timKiemGGTheoTG(Date DateInput) {
+        java.sql.Date dateSql = new java.sql.Date(DateInput.getTime());
+        return giamGiaDAO.timKiemGGTheoTG(dateSql);
+    }
+    
+    
+    public boolean kiemTraHieuLucKhuyenMai(int ma) {
+        boolean flag = false;
+        try {
+            flag = giamGiaDAO.kiemTraHieuLucKhuyenMai(ma);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        
+        return flag;
+    }
+    
+
+    public ArrayList<GiamGia> timKiemGiamGia(String tuKhoa) {
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<GiamGia> dsgg = new ArrayList<>();
+        for (GiamGia gg : listGiamGia) {
+            String ten = gg.getTenGG().toLowerCase();
+            String phanTram = gg.getPhanTramGiam() + "";
+            String dieuKien = gg.getDieuKien() + "";
+            String trangThai = "";
+            boolean flag = kiemTraHieuLucKhuyenMai(gg.getMaGG());
+            if(flag) {
+                trangThai = "Hiệu lực";
+            } else {
+                trangThai = "Không hiệu lực";
+            }
+            
+            if (ten.contains(tuKhoa) || phanTram.contains(tuKhoa) || dieuKien.contains(tuKhoa) || trangThai.contains(tuKhoa)) {
+                dsgg.add(gg);
+            }
+        }
+        return dsgg;
+    }
+        
+    public boolean kiemTraTrungGiamGia(String ten, String phanTram, String dieuKien, java.util.Date ngayBD, java.util.Date ngayKT) {
+        phanTram = phanTram.replace("%", "");
+        dieuKien = dieuKien.replace(",", "");
+        ten = ten.trim().toLowerCase();
+        dieuKien = dieuKien.trim().toLowerCase();
+        phanTram = phanTram.trim().toLowerCase();
+        for(GiamGia gg : listGiamGia) {
+            String tenGG = gg.getTenGG().toLowerCase();
+            String pt = gg.getPhanTramGiam()+"";
+            String dk = gg.getDieuKien()+"";
+            java.util.Date start = gg.getNgayBD();
+            java.util.Date end = gg.getNgayKT();
+            
+            int resultS = ngayBD.compareTo(start);
+            int resultE = ngayKT.compareTo(end);
+            
+            if(ten.equals(tenGG) && phanTram.equals(pt) && dieuKien.equals(dk) && resultS == 0 && resultE == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public GiamGia getGiamGia(int ma) {
+        return giamGiaDAO.getGiamGia(ma);
+    }
+    
 }
+

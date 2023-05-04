@@ -129,4 +129,8 @@ public class KhachHangBUS {
         return flag;
     }
     
+    public KhachHang getKhachHang(int ma) {
+        return khachHangDAO.getKhachHang(ma);
+    }
+    
 }

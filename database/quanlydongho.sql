@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 25, 2023 lúc 05:12 AM
+-- Thời gian đã tạo: Th5 02, 2023 lúc 05:24 PM
 -- Phiên bản máy phục vụ: 10.4.25-MariaDB
 -- Phiên bản PHP: 8.1.10
 
@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `quanlydongho`
 --
-CREATE DATABASE IF NOT EXISTS `quanlydongho` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `quanlydongho` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `quanlydongho`;
 
 -- --------------------------------------------------------
@@ -43,7 +43,28 @@ CREATE TABLE `cthoadon` (
 --
 
 INSERT INTO `cthoadon` (`MaHD`, `MaSP`, `SoLuong`, `DonGia`, `ThanhTien`) VALUES
-(1, 1, 1, 1607000, 1607000);
+(1, 1, 1, 1607000, 1607000),
+(2, 4, 6, 2999000, 17994000),
+(2, 8, 2, 1900000, 3800000),
+(3, 9, 2, 1900000, 3800000),
+(3, 13, 4, 1900000, 7600000),
+(3, 14, 2, 999900, 1999800),
+(4, 3, 5, 2999000, 14995000),
+(5, 6, 1, 999900, 999900),
+(5, 16, 1, 1900000, 1900000),
+(5, 17, 2, 1900000, 3800000),
+(6, 5, 2, 999900, 1999800),
+(7, 11, 5, 2999000, 14995000),
+(7, 31, 5, 2999000, 14995000),
+(8, 30, 1, 2999000, 2999000),
+(8, 31, 1, 2999000, 2999000),
+(8, 32, 1, 999900, 999900),
+(8, 33, 1, 1900000, 1900000),
+(8, 35, 1, 999900, 999900),
+(9, 43, 5, 999900, 4999500),
+(9, 44, 1, 1900000, 1900000),
+(10, 42, 3, 999900, 2999700),
+(10, 43, 5, 999900, 4999500);
 
 -- --------------------------------------------------------
 
@@ -65,7 +86,22 @@ CREATE TABLE `ctphieunhap` (
 --
 
 INSERT INTO `ctphieunhap` (`MaPN`, `MaSP`, `SoLuong`, `DonGia`, `ThanhTien`) VALUES
-(1, 1, 3, 1607000, 4821000);
+(1, 1, 3, 1607000, 4821000),
+(3, 4, 2, 1000000, 2000000),
+(4, 5, 2, 1500000, 3000000),
+(5, 4, 4, 1490000, 5960000),
+(6, 3, 5, 1490000, 7450000),
+(7, 6, 1, 450000, 450000),
+(7, 8, 2, 950000, 1900000),
+(8, 9, 2, 950000, 1900000),
+(8, 11, 5, 1500000, 7500000),
+(9, 13, 4, 950000, 3800000),
+(10, 14, 2, 650000, 1300000),
+(10, 16, 1, 950000, 950000),
+(10, 17, 2, 950000, 1900000),
+(11, 42, 3, 450000, 1350000),
+(11, 43, 10, 450000, 4500000),
+(11, 44, 1, 950000, 950000);
 
 -- --------------------------------------------------------
 
@@ -88,7 +124,8 @@ CREATE TABLE `giamgia` (
 --
 
 INSERT INTO `giamgia` (`MaGG`, `TenGG`, `PhanTramGiam`, `DieuKien`, `NgayBD`, `NgayKT`) VALUES
-(1, 'Không giảm giá', 0, 0, '2023-02-26', '2028-12-31');
+(1, 'Không giảm giá', 0, 0, '2023-02-26', '2023-12-15'),
+(3, 'Khuyến mãi tháng 5', 10, 150000, '2023-05-02', '2023-05-31');
 
 -- --------------------------------------------------------
 
@@ -103,6 +140,7 @@ CREATE TABLE `hoadon` (
   `MaKH` int(11) NOT NULL,
   `NgayLap` date NOT NULL,
   `TongTien` int(11) NOT NULL,
+  `MaGG` int(11) NOT NULL,
   `GhiChu` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -110,8 +148,17 @@ CREATE TABLE `hoadon` (
 -- Đang đổ dữ liệu cho bảng `hoadon`
 --
 
-INSERT INTO `hoadon` (`MaHD`, `MaNV`, `MaKH`, `NgayLap`, `TongTien`, `GhiChu`) VALUES
-(1, 1, 1, '2023-02-28', 1607000, 'Đã thanh toán');
+INSERT INTO `hoadon` (`MaHD`, `MaNV`, `MaKH`, `NgayLap`, `TongTien`, `MaGG`, `GhiChu`) VALUES
+(1, 1, 1, '2021-02-28', 1607000, 1, 'Đã thanh toán'),
+(2, 26, 1, '2021-01-31', 21794000, 1, 'Đã thanh toán'),
+(3, 26, 1, '2023-06-12', 13399800, 1, 'Đã thanh toán'),
+(4, 26, 1, '2022-10-06', 13495500, 3, 'Đã thanh toán'),
+(5, 26, 1, '2021-09-23', 6699900, 1, 'Đã thanh toán'),
+(6, 26, 1, '2022-11-20', 1999800, 1, 'Đã thanh toán'),
+(7, 26, 1, '2022-04-01', 29990000, 1, 'Đã thanh toán'),
+(8, 26, 1, '2023-12-15', 9897800, 1, 'Đã thanh toán'),
+(9, 26, 1, '2023-03-18', 6899500, 1, 'Đã thanh toán'),
+(10, 26, 1, '2023-06-01', 7999200, 1, 'Đã thanh toán');
 
 -- --------------------------------------------------------
 
@@ -135,7 +182,10 @@ CREATE TABLE `khachhang` (
 --
 
 INSERT INTO `khachhang` (`MaKH`, `Ho`, `Ten`, `GioiTinh`, `SoDienThoai`, `TongChiTieu`, `TinhTrang`) VALUES
-(1, 'Tôn Thành', 'Tâm', 'Nam', '0396265413', 0, 1);
+(1, 'Tôn Thành', 'Tâm', 'Nam', '0396265413', 112175500, 1),
+(2, 'Nguyễn Thị Thùy', 'Linh', 'Nữ', '0396371021', 0, 1),
+(3, 'Phan Mạnh', 'Quỳnh', 'Nam', '0396775066', 0, 1),
+(4, 'Tôn Thọ', 'Hưng', 'Nam', '0396356659', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -202,7 +252,8 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`MaNV`, `Ho`, `Ten`, `GioiTinh`, `ChucVu`) VALUES
-(1, 'Admin', NULL, NULL, 'Admin');
+(1, 'Admin', ' ', ' ', 'Admin'),
+(26, 'Tôn Thành', 'Tâm', 'Nam', 'nhân viên');
 
 -- --------------------------------------------------------
 
@@ -217,18 +268,19 @@ CREATE TABLE `phanquyen` (
   `QLSanPham` int(1) NOT NULL DEFAULT 0,
   `QLNhanVien` int(1) NOT NULL DEFAULT 0,
   `QLKhachHang` int(1) NOT NULL DEFAULT 0,
-  `ThongKe` int(1) NOT NULL DEFAULT 0
+  `ThongKe` int(1) NOT NULL DEFAULT 0,
+  `QLKhuyenMai` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Đang đổ dữ liệu cho bảng `phanquyen`
 --
 
-INSERT INTO `phanquyen` (`Quyen`, `NhapHang`, `QLSanPham`, `QLNhanVien`, `QLKhachHang`, `ThongKe`) VALUES
-('Default', 0, 0, 0, 0, 0),
-('Nhân viên', 0, 0, 0, 1, 0),
-('Quản lý', 1, 0, 1, 1, 1),
-('Quản trị', 1, 1, 1, 1, 1);
+INSERT INTO `phanquyen` (`Quyen`, `NhapHang`, `QLSanPham`, `QLNhanVien`, `QLKhachHang`, `ThongKe`, `QLKhuyenMai`) VALUES
+('Default', 0, 0, 0, 0, 0, 0),
+('Nhân viên', 1, 0, 0, 1, 0, 0),
+('Quản lý', 1, 0, 1, 1, 1, 1),
+('Quản trị', 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -250,7 +302,16 @@ CREATE TABLE `phieunhap` (
 --
 
 INSERT INTO `phieunhap` (`MaPN`, `MaNV`, `MaNCC`, `NgayLap`, `TongTien`) VALUES
-(1, 1, 1, '2023-02-28', 4821000);
+(1, 1, 1, '2023-02-28', 4821000),
+(3, 26, 1, '2021-05-15', 2000000),
+(4, 26, 1, '2021-01-22', 3000000),
+(5, 26, 1, '2022-08-23', 5960000),
+(6, 26, 1, '2023-10-01', 7450000),
+(7, 26, 1, '2022-07-13', 2350000),
+(8, 26, 1, '2022-04-20', 9400000),
+(9, 26, 1, '2023-10-24', 3800000),
+(10, 26, 4, '2021-07-16', 4150000),
+(11, 26, 2, '2023-05-02', 6800000);
 
 -- --------------------------------------------------------
 
@@ -303,12 +364,12 @@ INSERT INTO `sanpham` (`MaSP`, `TenSP`, `MaLoai`, `MaNCC`, `SoLuong`, `HinhAnh`,
 (27, 'tommy-1782337-nu', 2, 3, 10, 'tommy-1782337-nu.jpg', 999900, 'Mẫu phiên bản mạ vàng với mẫu kim chỉ nổi bật trên mặt số size 41.7mm đi kèm thiết kế 2 núm vặn điều chỉnh, vỏ máy kim loại mạ bạc kiểu dáng dày dặn của bô máy cơ.'),
 (28, 'tommy-1791807-nam', 1, 3, 10, 'tommy-1791807-nam.jpg', 1900000, 'Mẫu phiên bản mạ vàng với mẫu kim chỉ nổi bật trên mặt số size 41.7mm đi kèm thiết kế 2 núm vặn điều chỉnh, vỏ máy kim loại mạ bạc kiểu dáng dày dặn của bô máy cơ.'),
 (29, 'tommy-hilfiger-1782511-nu', 2, 3, 10, 'tommy-hilfiger-1782511-nu.jpg', 999900, 'Mẫu phiên bản mạ vàng với mẫu kim chỉ nổi bật trên mặt số size 41.7mm đi kèm thiết kế 2 núm vặn điều chỉnh, vỏ máy kim loại mạ bạc kiểu dáng dày dặn của bô máy cơ.'),
-(30, 'tommy-hilfiger-1792009-nam', 1, 3, 10, 'tommy-hilfiger-1792009-nam.jpg', 2999000, 'Mẫu phiên bản mạ vàng với mẫu kim chỉ nổi bật trên mặt số size 41.7mm đi kèm thiết kế 2 núm vặn điều chỉnh, vỏ máy kim loại mạ bạc kiểu dáng dày dặn của bô máy cơ.'),
-(31, 'tommy-hilfiger-1792015-nam', 1, 3, 10, 'tommy-hilfiger-1792015-nam.jpg', 2999000, 'Mẫu phiên bản mạ vàng với mẫu kim chỉ nổi bật trên mặt số size 41.7mm đi kèm thiết kế 2 núm vặn điều chỉnh, vỏ máy kim loại mạ bạc kiểu dáng dày dặn của bô máy cơ.'),
-(32, 'tommy-1782337-nu', 2, 3, 10, 'tommy-1782337-nu.jpg', 999900, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
-(33, 'tommy-1791807-nam', 1, 3, 10, 'tommy-1791807-nam.jpg', 1900000, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
+(30, 'tommy-hilfiger-1792009-nam', 1, 3, 9, 'tommy-hilfiger-1792009-nam.jpg', 2999000, 'Mẫu phiên bản mạ vàng với mẫu kim chỉ nổi bật trên mặt số size 41.7mm đi kèm thiết kế 2 núm vặn điều chỉnh, vỏ máy kim loại mạ bạc kiểu dáng dày dặn của bô máy cơ.'),
+(31, 'tommy-hilfiger-1792015-nam', 1, 3, 4, 'tommy-hilfiger-1792015-nam.jpg', 2999000, 'Mẫu phiên bản mạ vàng với mẫu kim chỉ nổi bật trên mặt số size 41.7mm đi kèm thiết kế 2 núm vặn điều chỉnh, vỏ máy kim loại mạ bạc kiểu dáng dày dặn của bô máy cơ.'),
+(32, 'tommy-1782337-nu', 2, 3, 9, 'tommy-1782337-nu.jpg', 999900, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
+(33, 'tommy-1791807-nam', 1, 3, 9, 'tommy-1791807-nam.jpg', 1900000, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
 (34, 'tommy-hilfiger-1782511-nu', 2, 3, 10, 'tommy-hilfiger-1782511-nu.jpg', 999900, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
-(35, 'tommy-hilfiger-1792009-nam', 1, 3, 10, 'tommy-hilfiger-1792009-nam.jpg', 999900, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
+(35, 'tommy-hilfiger-1792009-nam', 1, 3, 9, 'tommy-hilfiger-1792009-nam.jpg', 999900, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
 (36, 'tommy-hilfiger-1792015-nam', 1, 3, 10, 'tommy-hilfiger-1792015-nam.jpg', 1900000, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
 (37, 'g-shock-ga-2100-1a3dr-nam', 1, 2, 10, 'g-shock-ga-2100-1a3dr-nam.jpg', 1900000, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
 (38, 'g-shock-ga-2100-1a4dr-nam', 1, 2, 10, 'g-shock-ga-2100-1a4dr-nam.jpg', 999900, 'Mẫu đôi thiết kế mỏng thời trang với phần vỏ máy pin chỉ 8mm, mặt số trắng kiểu dáng đơn giản 3 kim 1 lịch.'),
@@ -340,7 +401,8 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` (`MaNV`, `TaiKhoan`, `MatKhau`, `Quyen`, `TrangThai`) VALUES
-(1, 'admin', 'admin', 'Quản trị', 1);
+(1, 'admin', 'admin', 'Quản trị', 1),
+(26, 'nv01', 'nv01', 'Nhân viên', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -372,7 +434,8 @@ ALTER TABLE `giamgia`
 ALTER TABLE `hoadon`
   ADD PRIMARY KEY (`MaHD`),
   ADD KEY `hoadon_ibfk_1` (`MaKH`),
-  ADD KEY `hoadon_ibfk_2` (`MaNV`);
+  ADD KEY `hoadon_ibfk_2` (`MaNV`),
+  ADD KEY `hoadon_ibfk_3` (`MaGG`);
 
 --
 -- Chỉ mục cho bảng `khachhang`
@@ -435,19 +498,19 @@ ALTER TABLE `taikhoan`
 -- AUTO_INCREMENT cho bảng `giamgia`
 --
 ALTER TABLE `giamgia`
-  MODIFY `MaGG` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MaGG` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `MaHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MaHD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `khachhang`
 --
 ALTER TABLE `khachhang`
-  MODIFY `MaKH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MaKH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `loai`
@@ -465,13 +528,13 @@ ALTER TABLE `nhacungcap`
 -- AUTO_INCREMENT cho bảng `nhanvien`
 --
 ALTER TABLE `nhanvien`
-  MODIFY `MaNV` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `MaNV` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `phieunhap`
 --
 ALTER TABLE `phieunhap`
-  MODIFY `MaPN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MaPN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `sanpham`
@@ -502,13 +565,8 @@ ALTER TABLE `ctphieunhap`
 --
 ALTER TABLE `hoadon`
   ADD CONSTRAINT `hoadon_ibfk_1` FOREIGN KEY (`MaKH`) REFERENCES `khachhang` (`MaKH`),
-  ADD CONSTRAINT `hoadon_ibfk_2` FOREIGN KEY (`MaNV`) REFERENCES `nhanvien` (`MaNV`);
-
---
--- Các ràng buộc cho bảng `nhanvien`
---
-ALTER TABLE `nhanvien`
-  ADD CONSTRAINT `nhanvien_ibfk_2` FOREIGN KEY (`MaNV`) REFERENCES `taikhoan` (`MaNV`);
+  ADD CONSTRAINT `hoadon_ibfk_2` FOREIGN KEY (`MaNV`) REFERENCES `nhanvien` (`MaNV`),
+  ADD CONSTRAINT `hoadon_ibfk_3` FOREIGN KEY (`MaGG`) REFERENCES `giamgia` (`MaGG`);
 
 --
 -- Các ràng buộc cho bảng `phieunhap`

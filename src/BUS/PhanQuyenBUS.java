@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class PhanQuyenBUS {
 
-    public static PhanQuyen quyenTK = null;
     private PhanQuyenDAO phanQuyenDAO = new PhanQuyenDAO();
     private ArrayList<PhanQuyen> listPhanQuyen = null;
 
@@ -15,8 +14,8 @@ public class PhanQuyenBUS {
         this.listPhanQuyen = phanQuyenDAO.getListQuyen();
     }
 
-    public void kiemTraNhomQuyen(String quyen) {
-        quyenTK = phanQuyenDAO.getQuyen(quyen);
+    public PhanQuyen getNhomQuyen(String quyen) {
+        return phanQuyenDAO.getQuyen(quyen);
     }
 
     public ArrayList<PhanQuyen> getListNhomQuyen() {
@@ -25,13 +24,13 @@ public class PhanQuyenBUS {
         return this.listPhanQuyen;
     }
 
-    public boolean suaNhomQuyen(String tenNhomQuyen, int nhapHang, int sanPham, int nhanVien, int khachHang, int thongKe) {
-        PhanQuyen phanQuyen = new PhanQuyen(tenNhomQuyen, nhapHang, sanPham, nhanVien, khachHang, thongKe);
+    public boolean suaNhomQuyen(String tenNhomQuyen, int nhapHang, int sanPham, int nhanVien, int khachHang, int thongKe, int khuyenMai) {
+        PhanQuyen phanQuyen = new PhanQuyen(tenNhomQuyen, nhapHang, sanPham, nhanVien, khachHang, thongKe, khuyenMai);
         return phanQuyenDAO.suaNhomQuyen(phanQuyen);
     }
 
     public boolean themNhomQuyen(String tenNhomQuyen) {
-        PhanQuyen phanQuyen = new PhanQuyen(tenNhomQuyen, 0, 0, 0, 0, 0);
+        PhanQuyen phanQuyen = new PhanQuyen(tenNhomQuyen, 0, 0, 0, 0, 0, 0);
         boolean flag = phanQuyenDAO.themNhomQuyen(phanQuyen);
         return flag;
     }

@@ -25,6 +25,12 @@ public class SanPham {
         this.moTa = moTa;
     }
 
+    public SanPham(int maSP, String tenSP, int soLuong) {
+        this.maSP = maSP;
+        this.tenSP = tenSP;
+        this.soLuong = soLuong;
+    }
+
     public int getMaSP() {
         return maSP;
     }

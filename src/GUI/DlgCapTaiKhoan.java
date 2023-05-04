@@ -160,9 +160,9 @@ public class DlgCapTaiKhoan extends javax.swing.JDialog {
                 txtTenDangNhap.getText().trim(),
                 (String) cmbQuyen.getSelectedItem());
         if(flag) {
-            JOptionPane.showMessageDialog(rootPane, "Thêm tài khoản thành công");
+            JOptionPane.showMessageDialog(rootPane, "Cấp tài khoản thành công");
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Thêm tài khoản thất bại");
+            JOptionPane.showMessageDialog(rootPane, "Cấp tài khoản thất bại");
         }
     }//GEN-LAST:event_btnTaoTaiKhoanActionPerformed
 

@@ -8,17 +8,19 @@ public class PhanQuyen {
     private int qlNhanVien;
     private int qlKhachHang;
     private int thongKe;
+    private int qlKhuyenMai;
 
     public PhanQuyen() {
     }
 
-    public PhanQuyen(String quyen, int nhapHang, int qlSanPham, int qlNhanVien, int qlKhachHang, int thongKe) {
+    public PhanQuyen(String quyen, int nhapHang, int qlSanPham, int qlNhanVien, int qlKhachHang, int thongKe, int qlKhuyenMai) {
         this.quyen = quyen;
         this.nhapHang = nhapHang;
         this.qlSanPham = qlSanPham;
         this.qlNhanVien = qlNhanVien;
         this.qlKhachHang = qlKhachHang;
         this.thongKe = thongKe;
+        this.qlKhuyenMai = qlKhuyenMai;
     }
 
     public String getQuyen() {
@@ -69,4 +71,13 @@ public class PhanQuyen {
         this.thongKe = thongKe;
     }
 
+    public int getQlKhuyenMai() {
+        return qlKhuyenMai;
+    }
+
+    public void setQlKhuyenMai(int qlKhuyenMai) {
+        this.qlKhuyenMai = qlKhuyenMai;
+    }
+
+    
 }

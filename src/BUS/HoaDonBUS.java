@@ -75,4 +75,8 @@ public class HoaDonBUS {
         }
         return null;
     }
+    
+    public HoaDon getHoaDon(int ma) {
+        return hoaDonDAO.getHoaDon(ma);
+    }
 }
