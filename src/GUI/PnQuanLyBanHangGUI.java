@@ -15,6 +15,7 @@ import BUS.PhieuNhapBUS;
 import BUS.SanPhamBUS;
 import Customs.MyDialog;
 import Customs.MyFileChooser;
+import DAO.NhanVienDAO;
 import DTO.CTHoaDon;
 import DTO.CTPhieuNhap;
 import DTO.HoaDon;
@@ -602,7 +603,9 @@ public class PnQuanLyBanHangGUI extends JPanel {
         loadDataTableCTHoaDon();
         loadDataTableHoaDon();
         
-        txtnhanvien.setText("26 - Tôn Thành - Tâm");
+        int maNV = new DangNhapBUS().taiKhoanLogin.getMaNV();
+        NhanVien nhanVien = new NhanVienBUS().getNhanVien(maNV);
+        txtnhanvien.setText(nhanVien.getMaNV() + " - " + nhanVien.getHo() + " " + nhanVien.getTen());
     }
     
     public void addevents()
@@ -614,9 +617,12 @@ public class PnQuanLyBanHangGUI extends JPanel {
                 txttensp.setText("");
                 txtdongia.setText("");
                 txtsoluong.setText("");
+                txtareamota.setText("");
+                lblAnhSP.setIcon(null);
                 cmbLoai.setSelectedIndex(0);
                 cmbNcc.setSelectedIndex(0);
                 cmbNcc.setEnabled(true);
+                
                 loadDataLenBangSanPham();
                 removeallitem();
 
@@ -630,11 +636,19 @@ public class PnQuanLyBanHangGUI extends JPanel {
                 txthdsanpham.setText("");
                 txthdsoluong.setText("");
                 txthdthanhtien.setText("");
+                txthdmahd.setText("");
                 txtmanv.setText("");
+                txtmakh.setText("");
                 txtghichu.setText("");
                 txtmahd.setText("");
                 txtngaylap.setText("");
                 txttongtien.setText("");
+                
+                txttientoithieu.setText("");
+                txttientoida.setText("");
+                txtngaytoithieu.setText("");
+                txtngaytoida.setText("");
+                
                 loadDataTableCTHoaDon();
                 loadDataTableHoaDon();
             }
@@ -869,7 +883,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         spBUS.docListSanPham();
         dtmsanpham.setRowCount(0);
 
-        ArrayList<SanPham> dssp = spBUS.getSanPhamTheoTen(tukhoa);
+        ArrayList<SanPham> dssp = spBUS.getSanPhamTheoTuKhoa(tukhoa);
 
         DecimalFormat dcf = new DecimalFormat("###,###");
 
