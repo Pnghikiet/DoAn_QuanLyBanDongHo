@@ -14,7 +14,7 @@ public class MainQuanLyGUI extends JFrame {
 
     public MainQuanLyGUI() {
         this.setTitle("Phần mềm quản lý bán đồng hồ");
-        this.setSize(1250, 700);
+        this.setSize(1250, 730);
         addControls();
         addEvents();
     }

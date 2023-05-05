@@ -15,7 +15,6 @@ import BUS.PhieuNhapBUS;
 import BUS.SanPhamBUS;
 import Customs.MyDialog;
 import Customs.MyFileChooser;
-import DAO.NhanVienDAO;
 import DTO.CTHoaDon;
 import DTO.CTPhieuNhap;
 import DTO.HoaDon;
@@ -335,7 +334,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         pnlthongtinnhanvien.add(txtnhanvien);
         
         pnlmota_hinhanh = new JPanel();
-        pnlmota_hinhanh.setBounds(0, 345, pnlthongtinsanpham.getWidth(), 200);
+        pnlmota_hinhanh.setBounds(0, 345, pnlthongtinsanpham.getWidth(), 190);
         pnlthongtinsanpham.add(pnlmota_hinhanh);
         pnlmota_hinhanh.setLayout(null);
         lblanh.setBounds(15, 3, 100, 22);
@@ -351,13 +350,13 @@ public class PnQuanLyBanHangGUI extends JPanel {
         txtareamota.setEditable(false);
         pnlmota_hinhanh.add(txtareamota);
         
-        btnnhapsanpham.setBounds( 70, 565, 175, 22);
+        btnnhapsanpham.setBounds( 70, 545, 175, 22);
         pnlthongtinsanpham.add(btnnhapsanpham);
         
-        btnxoa.setBounds(30, 595, 100, 22);
+        btnxoa.setBounds(30, 575, 100, 22);
         pnlthongtinsanpham.add(btnxoa);
         
-        btnxacnhan.setBounds(190, 595, 100, 22);
+        btnxacnhan.setBounds(190, 575, 100, 22);
         pnlthongtinsanpham.add(btnxacnhan);
         
         pnlsanpham.add(pnlthongtinsanpham);
@@ -490,7 +489,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         dtmhoadon.addColumn("Tổng tiền");
         
         tblphieunhap = new JTable(dtmhoadon);
-        tblphieunhap.setSize(pnlthongtinhoadon.getWidth(), 210);
+        tblphieunhap.setSize(pnlthongtinhoadon.getWidth(), 190);
 
         JTableHeader headertblpn =  tblphieunhap.getTableHeader();
         headertblpn.setBackground(Color.white);
@@ -502,7 +501,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         columnmodelpn.getColumn(2).setPreferredWidth(tblphieunhap.getWidth()/3);
         
         scrchitietpn = new JScrollPane(tblphieunhap);
-        scrchitietpn.setBounds(0, 0, pnlthongtinhoadon.getWidth(), 210);
+        scrchitietpn.setBounds(0, 0, pnlthongtinhoadon.getWidth(), 190);
         pnltablepn.add(scrchitietpn);
         pnlthongtinhoadon.add(pnltablepn);
         
@@ -578,7 +577,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         dtmchitiethoadon.addColumn("Thành Tiền");
         
         tblchitietphieunhap = new JTable(dtmchitiethoadon);
-        tblchitietphieunhap.setSize(pnlthongtinchitietpn.getWidth()-30, 490);
+        tblchitietphieunhap.setSize(pnlthongtinchitietpn.getWidth()-30, 460);
 
         JTableHeader headertblchitietpn =  tblchitietphieunhap.getTableHeader();
         headertblchitietpn.setBackground(Color.white);
@@ -593,7 +592,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
 
         
         scrchitietpn = new JScrollPane(tblchitietphieunhap);
-        scrchitietpn.setBounds(0, 0, pnlthongtinchitietpn.getWidth()-30, 490);
+        scrchitietpn.setBounds(0, 0, pnlthongtinchitietpn.getWidth()-30, 460);
         pnltablechitietpn.add(scrchitietpn);
         pnlthongtinchitietpn.add(pnltablechitietpn);
         
@@ -602,10 +601,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         loadDataLenBangSanPham();
         loadDataTableCTHoaDon();
         loadDataTableHoaDon();
-        
-        int maNV = new DangNhapBUS().taiKhoanLogin.getMaNV();
-        NhanVien nhanVien = new NhanVienBUS().getNhanVien(maNV);
-        txtnhanvien.setText(nhanVien.getMaNV() + " - " + nhanVien.getHo() + " " + nhanVien.getTen());
+        loadnhanvien();
     }
     
     public void addevents()
@@ -618,14 +614,11 @@ public class PnQuanLyBanHangGUI extends JPanel {
                 txtdongia.setText("");
                 txtsoluong.setText("");
                 txtareamota.setText("");
-                lblAnhSP.setIcon(null);
                 cmbLoai.setSelectedIndex(0);
-                cmbNcc.setSelectedIndex(0);
                 cmbNcc.setEnabled(true);
-                
                 loadDataLenBangSanPham();
+                loadAnh("");
                 removeallitem();
-
             }
         });
         
@@ -636,19 +629,17 @@ public class PnQuanLyBanHangGUI extends JPanel {
                 txthdsanpham.setText("");
                 txthdsoluong.setText("");
                 txthdthanhtien.setText("");
-                txthdmahd.setText("");
                 txtmanv.setText("");
-                txtmakh.setText("");
                 txtghichu.setText("");
                 txtmahd.setText("");
                 txtngaylap.setText("");
                 txttongtien.setText("");
-                
+                txtmakh.setText("");
+                txthdmahd.setText("");
                 txttientoithieu.setText("");
                 txttientoida.setText("");
-                txtngaytoithieu.setText("");
                 txtngaytoida.setText("");
-                
+                txtngaytoithieu.setText("");
                 loadDataTableCTHoaDon();
                 loadDataTableHoaDon();
             }
@@ -883,7 +874,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         spBUS.docListSanPham();
         dtmsanpham.setRowCount(0);
 
-        ArrayList<SanPham> dssp = spBUS.getSanPhamTheoTuKhoa(tukhoa);
+        ArrayList<SanPham> dssp = spBUS.getSanPhamTheoTen(tukhoa);
 
         DecimalFormat dcf = new DecimalFormat("###,###");
 
@@ -933,7 +924,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         else
         {
             ArrayList<HoaDon> dshd = new ArrayList<>();
-            hoadonBUS.getListHoaDonTheoGia(giatoithieu, giatoida);
+            dshd = hoadonBUS.getListHoaDonTheoGia(giatoithieu, giatoida);
             duaDataVaoTablePhieuNhap(dshd);
         }
                 
@@ -953,7 +944,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         else
         {
             ArrayList<HoaDon> dshd = new ArrayList<>();
-            hoadonBUS.getListHoaDonTheoNgay(ngaytoithieu, ngiatoida);
+            dshd = hoadonBUS.getListHoaDonTheoNgay(ngaytoithieu, ngiatoida);
             duaDataVaoTablePhieuNhap(dshd);
         }
     }
@@ -982,6 +973,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         if (dsct != null) {
             for (CTHoaDon ct : dsct) {
                 Vector vec = new Vector();
+                vec.add(ma);
                 vec.add(ct.getMaSP());
                 vec.add(dcf.format(ct.getSoLuong()));
                 vec.add(dcf.format(ct.getDonGia()));
@@ -1040,7 +1032,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         }
 
         if (img != null) {
-            Image dimg = img.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+            Image dimg = img.getScaledInstance(lblAnhSP.getWidth(), lblAnhSP.getHeight(), Image.SCALE_SMOOTH);
             return new ImageIcon(dimg);
         }
 
@@ -1081,7 +1073,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
                 int dongia = Integer.parseInt(txtdongia.getText().replace(",", ""));
                 int thanhtien = dongia * soluong;
 
-                if(sp.getSoLuong() - soluong < 0)
+                if(sp.getSoLuong() - soluong < 0 || soluong <= 0)
                 {
                     new MyDialog("Số lượng không đủ để thêm vào", MyDialog.ERROR_DIALOG);
                 }
@@ -1286,7 +1278,7 @@ public class PnQuanLyBanHangGUI extends JPanel {
         ArrayList<NhanVien> dsnv = nhanvienBUS.getDanhSachNhanVien();
         for(NhanVien i : dsnv)
         {
-            if(String.valueOf(i.getMaNV()).equals(dangnhapBUS.taiKhoanLogin.getMaNV()))
+            if(i.getMaNV() == DangNhapBUS.taiKhoanLogin.getMaNV())
             {
                 txtnhanvien.setText(i.getMaNV() + " - " + i.getHo() + " " + i.getTen());
                 break;

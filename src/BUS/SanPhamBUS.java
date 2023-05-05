@@ -41,29 +41,14 @@ public class SanPhamBUS {
         return null;
     }
 
-    public ArrayList<SanPham> getSanPhamTheoTuKhoa(String tukhoa) {
-        tukhoa = tukhoa.toLowerCase().trim();
-        tukhoa = tukhoa.replace(",", "");
-        ArrayList<SanPham> dssp = new ArrayList<>();
-        for (SanPham sp : listSanPham) {
-            String maSP = sp.getMaSP()+"";
-            String tenSP = sp.getTenSP().toLowerCase();
-            String loai = new LoaiBUS().getTenLoai(sp.getMaLoai());
-            String donGia = sp.getDonGia() + "";
-            String soLuong = sp.getSoLuong()+ "";
-            String moTa = sp.getMoTa();
-            if (maSP.toLowerCase().contains(tukhoa) || tenSP.toLowerCase().contains(tukhoa) || loai.toLowerCase().contains(tukhoa)  || donGia.toLowerCase().contains(tukhoa)  || soLuong.toLowerCase().contains(tukhoa)  || moTa.toLowerCase().contains(tukhoa))  {
-                dssp.add(sp);
-            }
-        }
-        return dssp;
-    }
-
     public ArrayList<SanPham> getSanPhamTheoTen(String ten) {
         ArrayList<SanPham> dssp = new ArrayList<>();
+        LoaiBUS loaiBUS = new LoaiBUS();
         for (SanPham sp : listSanPham) {
             String tenSP = sp.getTenSP().toLowerCase();
-            if (tenSP.toLowerCase().contains(ten.toLowerCase().trim()))  {
+            if (tenSP.toLowerCase().contains(ten.toLowerCase()) || (sp.getMaSP() + "").contains(ten) || (sp.getDonGia() +"").contains(ten)
+                    || (sp.getDonGia() + "").contains(ten) || (sp.getMaLoai() + "").contains(ten) || (loaiBUS.getTenLoai(sp.getMaLoai())).contains(ten)
+                    || (sp.getSoLuong() + "").contains(ten) || (sp.getMoTa().contains(ten))) {
                 dssp.add(sp);
             }
         }
