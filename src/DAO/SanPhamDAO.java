@@ -189,7 +189,7 @@ public class SanPhamDAO {
 
     public boolean xoaSanPham(int maSP) {
         try {
-            String sql = "DELETE FROM sanpham WHERE MaSP=" + maSP;
+            String sql = "DELETE * FROM sanpham WHERE MaSP=" + maSP;
             Statement st = MyConnect.conn.createStatement();
             st.execute(sql);
             return true;

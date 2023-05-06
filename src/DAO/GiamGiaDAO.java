@@ -117,7 +117,7 @@ public class GiamGiaDAO {
     public boolean kiemTraHieuLucKhuyenMai(int maGG) {
         boolean flag = false;
         try {
-            String sql = "SELECT * FROM giamgia WHERE NgayKT >= DATE(NOW()) AND MaGG = ?";
+            String sql = "SELECT * FROM giamgia WHERE NgayKT >= DATE(NOW()) AND NgayBD <= DATE(NOW()) AND MaGG = ?";
             PreparedStatement prep = MyConnect.conn.prepareStatement(sql);
             prep.setInt(1, maGG);
             ResultSet rs = prep.executeQuery();

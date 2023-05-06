@@ -1276,14 +1276,14 @@ public class PnQuanLyNhapHangGUI extends JPanel {
     
     private void xuliclichtablenhaphang()
     {
-        int row = tblphieunhap.getSelectedRow();
+        int row = tblnhaphang.getSelectedRow();
         if(row > -1)
         {
-            String ma = tblsanpham.getValueAt(row, 0) + "";
-            String ten = tblsanpham.getValueAt(row, 1) + "";
-            String loai = tblsanpham.getValueAt(row, 2) + "";
-            String soLuong = tblsanpham.getValueAt(row, 3) + "";
-            String donGia = tblsanpham.getValueAt(row, 4) + "";
+            String ma = tblnhaphang.getValueAt(row, 0) + "";
+            String ten = tblnhaphang.getValueAt(row, 1) + "";
+            String loai = tblnhaphang.getValueAt(row, 2) + "";
+            String soLuong = tblnhaphang.getValueAt(row, 4) + "";
+            String donGia = tblnhaphang.getValueAt(row, 3) + "";
             
             txtmasp.setText(ma);
             txttensp.setText(ten);

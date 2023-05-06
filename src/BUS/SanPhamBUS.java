@@ -173,12 +173,15 @@ public class SanPhamBUS {
 
         int maSP = Integer.parseInt(ma);
         if (spDAO.xoaSanPham(maSP)) {
+            
             new MyDialog("Xoá thành công!", MyDialog.SUCCESS_DIALOG);
             return true;
         }
-
-        new MyDialog("Xoá thất bại!", MyDialog.ERROR_DIALOG);
-        return false;
+        else
+        {
+            new MyDialog("Xoá thất bại!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
     }
 
     public boolean suaSanPham(String ma,
