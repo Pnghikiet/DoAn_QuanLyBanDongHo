@@ -1,2 +1,10 @@
 # DoAn_QuanLyBanDongHo
-Nhóm 3, môn Java
+## required
+- JDK version:
+```
+  JDK 19.0 or greater
+```
+- SQL:
+```
+  using MYSQL
+```
